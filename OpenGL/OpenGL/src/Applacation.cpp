@@ -27,6 +27,8 @@
 #include "tests/TestTexture2D.h"
 #include "tests/TestTexture3D.h"
 
+#include "MyTime.h"
+
 int main(void)
 {
     GLFWwindow* window;
@@ -76,6 +78,8 @@ int main(void)
 
         while (!glfwWindowShouldClose(window))
         {
+			MyTime::Update();
+
             renderer.Clear(); // 移出 if，无论如何每一帧先清屏
 
             ImGui_ImplGlfwGL3_NewFrame();

@@ -3,17 +3,20 @@
 #include "imgui/imgui.h"
 
 #include "GLFW/glfw3.h"
+#include "Input.h"
+#include "MyTime.h"
 
 namespace test
 {
 	TestTexture3D::TestTexture3D()
 		:m_Translation(0.0f, 0.0f, 0.0f),
 		m_Scare(1.0f, 1.0f, 1.0f),
-		m_Proj(glm::perspective(glm::radians(45.0f),1920.0f/1080.0f,0.1f,100.0f)),
-		m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -6))),
+		//m_Proj(glm::perspective(glm::radians(45.0f),1920.0f/1080.0f,0.1f,100.0f)),
+		//m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, -6))),
 		m_Model(glm::rotate(glm::mat4(1.0f),glm::radians(0.0f),glm::vec3(1.0f,0,0))),
 		m_ClearColor{ 0.2f,0.3f,0.8f,1.0f },
-		m_Camera(glm::vec3(0, 0, -6), glm::vec3(0, 0, -1))
+		m_Camera(glm::vec3(0.0f, 0.0f, 10.0f)),
+		cameraSpeed(2.0f)
 	{
 		float position[] = {
 	-5.0f, -5.0f,10.0f, 0.0f,0.0f,    //1.0f, 0.0f, 0.0f, 1.0f,
@@ -109,12 +112,53 @@ namespace test
 
 		m_Texture->Bind(0);
 
-		float radius = 10.0f;
+		if (Input::IsKeyPressed(GLFW_KEY_W))
+		{
+			m_Camera.MoveCamera(cameraSpeed * m_Camera.GetCameraFront()*MyTime::GetDeltaTime());
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_S))
+		{
+			m_Camera.MoveCamera(-cameraSpeed * m_Camera.GetCameraFront() * MyTime::GetDeltaTime());
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_D))
+		{
+			m_Camera.MoveCamera(-glm::normalize(glm::cross(m_Camera.GetCameraUp(), m_Camera.GetCameraFront()))
+				*cameraSpeed * MyTime::GetDeltaTime());
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_A))
+		{
+			m_Camera.MoveCamera(glm::normalize(glm::cross(m_Camera.GetCameraUp(), m_Camera.GetCameraFront()))
+				*cameraSpeed * MyTime::GetDeltaTime());
+		}
 
-		float cameraX =sin( glfwGetTime()) * radius;
-		float cameraZ = cos(glfwGetTime()) * radius;
+		static bool firstMouse = true;
+		static float lastX = 1920.0f/2.0f;
+		static float lastY = 1080.0f / 2.0f;
 
-		m_View = glm::lookAt(glm::vec3(cameraX, 0,cameraZ), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
+		float currentX = Input::GetMouseX();
+		float currentY = Input::GetMouseY();
+
+		if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
+		{
+			if (firstMouse)
+			{
+				lastX = currentX;
+				lastY = currentY;
+				firstMouse = false;
+			}
+
+			float xoffset = currentX - lastX;
+			float yoffset = lastY - currentY;
+
+			if (xoffset != 0.0f || yoffset != 0.0f)
+			{
+				m_Camera.ProcessMouseMovement(xoffset, yoffset);
+			}
+		}
+		else
+		{
+			firstMouse = true;
+		}
 
 		for (unsigned i = 0; i <cubePositions.size(); i++)
 		{
@@ -137,8 +181,9 @@ namespace test
 
 			m_Shader->Bind();
 			m_Shader->SetUniformMat4f("u_Model", model);
-			m_Shader->SetUniformMat4f("u_Projection", m_Proj);
-			m_Shader->SetUniformMat4f("u_View", m_View);
+			m_Shader->SetUniformMat4f("u_Projection", m_Camera.GetProjectionMatrix());
+
+			m_Shader->SetUniformMat4f("u_View", m_Camera.GetViewMatrix());
 
 			Renderer renderer;
 			renderer.Draw(*m_Vao, *m_Ibo, *m_Shader);

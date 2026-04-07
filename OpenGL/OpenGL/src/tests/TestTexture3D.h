@@ -32,7 +32,7 @@ namespace test
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<Texture> m_Texture;
 
-		glm::mat4 m_Proj, m_View,m_Model;
+		glm::mat4 m_Model;
 		glm::vec3 m_Translation;
 		glm::vec3 m_Scare;
 		float m_RotationZ;
@@ -46,5 +46,7 @@ namespace test
 		std::vector<glm::vec3> cubePositions;
 
 		Camera m_Camera;
+
+		float cameraSpeed;
 	};
 }
