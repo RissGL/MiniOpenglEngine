@@ -25,6 +25,7 @@
 #include "tests/TestClearColor.h"
 #include "tests/TestMenu.h"
 #include "tests/TestTexture2D.h"
+#include "tests/TestTexture3D.h"
 
 int main(void)
 {
@@ -37,7 +38,7 @@ int main(void)
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(1000, 1000, "OpenGL Debugging", NULL, NULL);
+    window = glfwCreateWindow(1920, 1080, "OpenGL Debugging", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -70,6 +71,8 @@ int main(void)
 
         (*testMenu).RegisterTest<test::TestClearColor>("Test Color");
 		testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
+		testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
+
 
         while (!glfwWindowShouldClose(window))
         {
