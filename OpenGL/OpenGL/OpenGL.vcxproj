@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Applacation.cpp" />
+    <ClCompile Include="src\Camera.cpp" />
+    <ClCompile Include="src\GLVideoRecorder.cpp" />
     <ClCompile Include="src\HomeWork.cpp" />
     <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
@@ -139,6 +141,7 @@
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestMenu.cpp" />
     <ClCompile Include="src\tests\TestTexture2D.cpp" />
+    <ClCompile Include="src\tests\TestTexture3D.cpp" />
     <ClCompile Include="src\Texture.cpp" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
@@ -151,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\res\shaders\Basic.shader" />
+    <None Include="src\res\shaders\shader2.shader" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
@@ -293,6 +297,8 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Camera.h" />
+    <ClInclude Include="src\GLVideoRecorder.h" />
     <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Shader.h" />
@@ -300,6 +306,7 @@
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestMenu.h" />
     <ClInclude Include="src\tests\TestTexture2D.h" />
+    <ClInclude Include="src\tests\TestTexture3D.h" />
     <ClInclude Include="src\Texture.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
