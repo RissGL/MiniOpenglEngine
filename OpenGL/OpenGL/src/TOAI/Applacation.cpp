@@ -25,6 +25,7 @@
 #include "tests/TestClearColor.h"
 #include "tests/TestMenu.h"
 #include "tests/TestTexture2D.h"
+#include "tests/TestTexture3D.h"
 
 int main(void)
 {
@@ -70,6 +71,7 @@ int main(void)
 
         (*testMenu).RegisterTest<test::TestClearColor>("Test Color");
 		testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
+		testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
 
         while (!glfwWindowShouldClose(window))
         {

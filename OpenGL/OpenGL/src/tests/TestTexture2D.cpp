@@ -5,8 +5,10 @@
 
 namespace test 
 {
-	TestTexture2D::TestTexture2D()
+	TestTexture2D::TestTexture2D() 
 		:m_Translation(200.0f, 200.0f, 0.0f),
+		m_Scare(1.0f, 1.0f, 1.0f),
+		m_Rotation(0.0f),
 		m_Proj(glm::ortho(0.0f,1000.0f,0.0f,1000.0f,-1.0f,1.0f)),
 		m_View(glm::translate(glm::mat4(1.0f), glm::vec3(0, 0, 0)))
 	{
@@ -35,7 +37,7 @@ namespace test
 		m_Shader = std::make_unique<Shader>("src/res/shaders/Basic.shader");
 		m_Shader->Bind();
 
-		m_Texture = std::make_unique<Texture>("src/res/texture/imgi_18_kea_ao.png");
+		m_Texture = std::make_unique<Texture>("src/res/texture/2000x2000bb-100 (4).jpg");
 		m_Texture->Bind(0);
 		m_Shader->SetUniform1i("u_Texture", 0);
 
@@ -57,6 +59,8 @@ namespace test
 		m_Texture->Bind(0);
 
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
+		model = glm::rotate(model, glm::radians(m_Rotation), glm::vec3(0,0,1));
+		model = glm::scale(model, m_Scare);
 
 		glm::mat4 mvp = m_Proj * m_View * model;
 
@@ -65,12 +69,13 @@ namespace test
 
 		Renderer renderer;
 		renderer.Draw(*m_Vao, *m_Ibo, *m_Shader);
-
 	}
 
 	void TestTexture2D::OnImGuiRender()
 	{
 		ImGui::SliderFloat3("Translation", &m_Translation.x, 0, 1000.0f);
+		ImGui::SliderFloat("Rotation", &m_Rotation, 0, 1000.0f);
+		ImGui::SliderFloat3("Scare", &m_Scare.x, 0, 10.0f);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 

@@ -11,18 +11,17 @@
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
+
 namespace test
 {
-	class  TestTexture2D :public Test
+	class TestTexture3D:public Test
 	{
 	public:
-		 TestTexture2D();
-		~ TestTexture2D();
-
+		TestTexture3D();
+		~TestTexture3D();
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
 		void OnImGuiRender() override;
-
 	private:
 		std::unique_ptr<VertexArray> m_Vao;
 		std::unique_ptr<VertexBuffer> m_Vbo;
@@ -31,10 +30,11 @@ namespace test
 		std::unique_ptr<Shader> m_Shader;
 		std::unique_ptr<Texture> m_Texture;
 
-		glm::mat4 m_Proj, m_View;
+		glm::mat4 m_Proj, m_View,m_Model;
 		glm::vec3 m_Translation;
 		glm::vec3 m_Scare;
-		float m_Rotation;
+		float m_RotationZ;
+		float m_RotationX;
+		float m_RotationY;
 	};
-
 }
