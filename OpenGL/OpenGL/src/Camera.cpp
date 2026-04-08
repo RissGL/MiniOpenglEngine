@@ -2,6 +2,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "MyTime.h"
+#include "Window/MyWindow.h"
 
 Camera::Camera(glm::vec3 position, float yaw, float pitch)
     : m_Pos(position),
@@ -11,7 +12,7 @@ Camera::Camera(glm::vec3 position, float yaw, float pitch)
     m_WorldUp(glm::vec3(0.0f, 1.0f, 0.0f)),
     m_CameraUp(glm::vec3(0.0f, 1.0f, 0.0f)),
     m_Right(glm::vec3(1.0f, 0.0f, 0.0f)),
-    m_MouseSensitivity(0.005f),
+    m_MouseSensitivity(0.07f),
     m_ProjectionMode(ProjectionMode::Perspective),
     m_Fov(45.0f),
     m_AspectRatio(1920.0f / 1080.0f),
@@ -19,6 +20,7 @@ Camera::Camera(glm::vec3 position, float yaw, float pitch)
     m_FarPlane(100.0f),
     m_OrthoScale(10.0f)
 {
+	m_AspectRatio = MyWindow::GetWidth() / (float)MyWindow::GetHeight();
 	UpdateCameraVectors();
 }
 
@@ -91,6 +93,15 @@ void Camera::ProcessMouseMovement(float xOffset, float yOffset, bool constrainPi
 	}
 
 	UpdateCameraVectors();
+}
+
+void Camera::ProcessMouseScroll(float yOffset)
+{
+	m_Fov -= (float)yOffset;
+	if (m_Fov < 1.0f)
+		m_Fov = 1.0f;
+	if (m_Fov > 45.0f)
+		m_Fov = 45.0f;
 }
 
 glm::mat4 Camera::GetViewMatrix() const

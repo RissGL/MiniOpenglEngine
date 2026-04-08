@@ -9,10 +9,8 @@ public:
     GLVideoRecorder();
     ~GLVideoRecorder();
 
-    // 在 Test 的 OnImGuiRender 中调用，显示录制面板
     void OnImGuiRender();
 
-    // 在 Test 的 OnRender 结尾（绘制完所有东西后）调用，抓取画面
     void CaptureFrame(int windowWidth, int windowHeight);
     void OnImGuiRender(int currentWidth, int currentHeight);
 
@@ -35,5 +33,5 @@ private:
 
     bool m_EnableAudio;
     int m_DurationSeconds;
-    int m_FPS;               // 录制帧率（建议和你显示器刷新率一致，通常为60）
+    int m_FPS;               // 录制帧率
 };

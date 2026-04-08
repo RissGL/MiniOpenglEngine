@@ -28,97 +28,65 @@
 #include "tests/TestTexture3D.h"
 
 #include "MyTime.h"
+#include "Input.h"
+#include "Window/MyWindow.h"
+
+#include "Debug/Debug.h"
 
 int main(void)
 {
-    GLFWwindow* window;
+    MyWindow appWindow(1920, 1080, "OpenGL Debugging");
 
-    if (!glfwInit())
-        return -1;
+    ImGui::CreateContext();
+    ImGui_ImplGlfwGL3_Init(appWindow.GetNativeWindow(), true);
+    ImGui::StyleColorsDark();
 
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);
+    glfwSetScrollCallback(appWindow.GetNativeWindow(), Input::ScrollCallback);
 
-    window = glfwCreateWindow(1920, 1080, "OpenGL Debugging", NULL, NULL);
-    if (!window)
+    Renderer renderer;
+    GLCALL(glEnable(GL_BLEND));
+    GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+
+    test::Test* currentTest = nullptr;
+    test::TestMenu* testMenu = new test::TestMenu(currentTest);
+    currentTest = testMenu;
+
+    testMenu->RegisterTest<test::TestClearColor>("Test Color");
+    testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
+    testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
+
+
+    while (!appWindow.IsClosed())
     {
-        glfwTerminate();
-        return -1;
-    }
+        MyTime::Update();
+        renderer.Clear();
+        ImGui_ImplGlfwGL3_NewFrame();
 
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1); // 开启垂直同步，让动画更丝滑
-
-    if (glewInit() != GLEW_OK)
-    {
-        std::cout << "GLEW 启动失败!" << std::endl;
-    }
-
-    // 获取版本信息不需要 GLCALL，因为这是查询
-    std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
-    {
-        ImGui::CreateContext();
-		ImGui_ImplGlfwGL3_Init(window, true);
-		ImGui::StyleColorsDark();
-
-        Renderer renderer;
-
-        GLCALL(glEnable(GL_BLEND));
-        GLCALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-
-		test::Test* currentTest = nullptr;
-		test::TestMenu* testMenu = new test::TestMenu(currentTest);
-		currentTest = testMenu;
-
-        (*testMenu).RegisterTest<test::TestClearColor>("Test Color");
-		testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
-		testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
-
-
-        while (!glfwWindowShouldClose(window))
+        if (currentTest)
         {
-			MyTime::Update();
+            currentTest->OnUpdate(0.0f);
+            currentTest->OnRender();
 
-            renderer.Clear(); // 移出 if，无论如何每一帧先清屏
-
-            ImGui_ImplGlfwGL3_NewFrame();
-
-            if (currentTest)
+            ImGui::Begin("Test Framework");
+            if (currentTest != testMenu && ImGui::Button("<- Back"))
             {
-                currentTest->OnUpdate(0.0f);
-                currentTest->OnRender();
-
-                ImGui::Begin("Test Framework");
-
-                if (currentTest != testMenu && ImGui::Button("<- Back"))
-                {
-                    delete currentTest;
-                    currentTest = testMenu;
-                }
-
-                currentTest->OnImGuiRender();
-
-                ImGui::End();
+                delete currentTest;
+                currentTest = testMenu;
             }
-
-            ImGui::Render();
-            ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
-
-            glfwSwapBuffers(window);
-            glfwPollEvents();
-
+            currentTest->OnImGuiRender();
+            ImGui::End();
         }
-        if (currentTest != testMenu)
-            delete currentTest;
 
-        // 最后删掉菜单本身
-        delete testMenu;
+        ImGui::Render();
+        ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
 
+        appWindow.OnUpdate();
     }
+
+    if (currentTest != testMenu) delete currentTest;
+    delete testMenu;
 
     ImGui_ImplGlfwGL3_Shutdown();
     ImGui::DestroyContext();
-    glfwTerminate();
     return 0;
 }

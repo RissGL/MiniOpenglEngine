@@ -255,7 +255,9 @@ struct compute_vec_div<L, T, Q, true> : public compute_vec_div<L, T, Q, false>
 	{
 		GLM_FUNC_QUALIFIER static vec<L, int, Q> call(vec<L, int, Q> const& a, vec<L, int, Q> const& b)
 		{
-#if defined(_MSC_VER) && _MSC_VER >= 1920 //_mm_div_epi32 only defined with VS >= 2019
+#if defined(_MSC_VER) && _MSC_VER >= 
+			
+			//_mm_div_epi32 only defined with VS >= 2019
 			vec<L, int, Q> Result;
 			Result.data = _mm_div_epi32(a.data, b.data);
 			return Result;

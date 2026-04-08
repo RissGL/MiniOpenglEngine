@@ -235,7 +235,8 @@
 #elif defined(_MSC_VER)
 #   if _MSC_VER >= 1930
 #		define GLM_COMPILER GLM_COMPILER_VC17
-#	elif _MSC_VER >= 1920
+#	elif _MSC_VER >= 
+
 #		define GLM_COMPILER GLM_COMPILER_VC16
 #	elif _MSC_VER >= 1916
 #		define GLM_COMPILER GLM_COMPILER_VC15_9

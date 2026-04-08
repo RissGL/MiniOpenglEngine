@@ -81,6 +81,9 @@
     <ClCompile Include="src\Window\MyWindow.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\Debug\Debugcpp.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\res\shaders\Basic.shader" />
@@ -1450,6 +1453,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\Window\MyWindow.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Debug\Debug.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,6 +7,9 @@
 #include <string>
 #include <cmath>
 
+#include "Debug/Debug.h"
+
+
 Shader::Shader(const std::string& filepath)
 	:m_RendererID(0),filepath(filepath)
 {

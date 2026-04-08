@@ -2,6 +2,9 @@
 #include "imgui/imgui.h"
 #include "Renderer.h"
 
+#include "Debug/Debug.h"
+
+
 namespace test
 {
 	TestMenu::TestMenu(Test*& currentTestPointer)

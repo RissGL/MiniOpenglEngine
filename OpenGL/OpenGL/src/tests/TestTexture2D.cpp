@@ -3,6 +3,9 @@
 #include "imgui/imgui.h"
 #include "VertexBufferLayout.h"
 
+#include "Debug/Debug.h"
+
+
 namespace test 
 {
 	TestTexture2D::TestTexture2D() 

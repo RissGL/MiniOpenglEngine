@@ -6,6 +6,9 @@
 #include "Input.h"
 #include "MyTime.h"
 
+#include "Debug/Debug.h"
+#include "Window/MyWindow.h"
+
 namespace test
 {
 	TestTexture3D::TestTexture3D()
@@ -83,7 +86,7 @@ namespace test
 
 	 cubePositions = {
   glm::vec3(0.0f,  0.0f,  0.0f),
-  glm::vec3(2.0f,  5.0f, -15.0f),
+  glm::vec3(1.0f,  3.0f, -3.0f),
   glm::vec3(-1.5f, -2.2f, -2.5f),
   glm::vec3(-3.8f, -2.0f, -12.3f),
   glm::vec3(2.4f, -0.4f, -3.5f),
@@ -105,7 +108,7 @@ namespace test
 
 	void TestTexture3D::OnRender()
 	{
-		GLCALL(glViewport(0, 0, 1920, 1080));
+		GLCALL(glViewport(0, 0, MyWindow::GetWidth(), MyWindow::GetHeight()));
 		GLCALL(glEnable(GL_DEPTH_TEST));
 		GLCALL(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
 		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -132,8 +135,8 @@ namespace test
 		}
 
 		static bool firstMouse = true;
-		static float lastX = 1920.0f/2.0f;
-		static float lastY = 1080.0f / 2.0f;
+		static float lastX = MyWindow::GetWidth()/2.0f;
+		static float lastY = MyWindow::GetHeight() / 2.0f;
 
 		float currentX = Input::GetMouseX();
 		float currentY = Input::GetMouseY();
@@ -147,8 +150,8 @@ namespace test
 				firstMouse = false;
 			}
 
-			float xoffset = currentX - lastX;
-			float yoffset = lastY - currentY;
+			float xoffset = MyWindow::GetMouseOffsetX();
+			float yoffset = MyWindow::GetMouseOffsetY();
 
 			if (xoffset != 0.0f || yoffset != 0.0f)
 			{
@@ -160,7 +163,13 @@ namespace test
 			firstMouse = true;
 		}
 
-		for (unsigned i = 0; i <cubePositions.size(); i++)
+		float scrollY = Input::GetScrollY();
+		if (scrollY!=0)
+		{
+			m_Camera.ProcessMouseScroll(scrollY);
+		}
+
+		for (unsigned i = 0; i <1; i++)
 		{
 			glm::mat4 model = glm::mat4(1.0f);
 
@@ -190,7 +199,7 @@ namespace test
 		}
 
 
-		m_Recorder.CaptureFrame(1920, 1080);
+		m_Recorder.CaptureFrame(MyWindow::GetWidth(), MyWindow::GetHeight());
 	}
 
 	void TestTexture3D::OnImGuiRender()
@@ -208,7 +217,7 @@ namespace test
 
 		if (m_ShowFFmpegTool)
 		{
-			m_Recorder.OnImGuiRender(1920,1080);
+			m_Recorder.OnImGuiRender(MyWindow::GetWidth(), MyWindow::GetHeight());
 		}
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}

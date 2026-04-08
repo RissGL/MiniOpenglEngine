@@ -18,14 +18,16 @@
 
 namespace test
 {
-	class TestTexture3D:public Test
+	class TestIllumination :public Test
 	{
 	public:
-		TestTexture3D();
-		~TestTexture3D();
-		void OnUpdate(float deltaTime) override;
-		void OnRender() override;
+		TestIllumination();
+		~TestIllumination();
+
 		void OnImGuiRender() override;
+		void OnRender() override;
+		void OnUpdate(float deltaTime) override;
+
 	private:
 		std::unique_ptr<VertexArray> m_Vao;
 		std::unique_ptr<VertexBuffer> m_Vbo;
@@ -48,7 +50,6 @@ namespace test
 		std::vector<glm::vec3> cubePositions;
 
 		Camera m_Camera;
-
-		float cameraSpeed;
 	};
+
 }

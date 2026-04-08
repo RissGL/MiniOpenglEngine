@@ -40,6 +40,7 @@ public:
 	void UpdateCameraVectors();
 
 	void ProcessMouseMovement(float xOffset, float yOffset, bool constrainPitch=true);
+	void ProcessMouseScroll(float yOffset);
 
 	//µ√µΩ ”Õºæÿ’Û
 	glm::mat4 GetViewMatrix() const;

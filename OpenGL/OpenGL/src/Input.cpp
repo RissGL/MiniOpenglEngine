@@ -1,5 +1,16 @@
 #include "Input.h"
-#include <GLFW/glfw3.h>
+
+float Input::s_ScrollY = 0.0f;
+
+float Input::GetScrollY()
+{
+	return s_ScrollY;
+}
+
+void Input::EndFrame()
+{
+	s_ScrollY = 0.0f;
+}
 
 bool Input::IsKeyPressed(int keycode)
 {
@@ -38,4 +49,9 @@ float Input::GetMouseX()
 float Input::GetMouseY()
 {
 	return GetMousePosition().y;
+}
+
+void Input::ScrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	s_ScrollY = (float)yoffset;
 }

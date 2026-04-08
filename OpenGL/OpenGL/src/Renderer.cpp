@@ -1,22 +1,7 @@
 #include "Renderer.h"
 #include <iostream>
+#include "Debug/Debug.h"
 
-void GlClearError()
-{
-    // glGetError 会返回错误标志，调用后会被重置为 GL_NO_ERROR，所以需要循环清空
-    while (glGetError() != GL_NO_ERROR);
-}
-
-bool GlLogCall(const char* function, const char* file, int line)
-{
-    while (GLenum error = glGetError())
-    {
-        std::cout << "[OpenGL Error] (" << error << "): " << function <<
-            " " << file << ":" << line << std::endl;
-        return false;
-    }
-    return true;
-}
 
 void Renderer::Clear()const
 {
