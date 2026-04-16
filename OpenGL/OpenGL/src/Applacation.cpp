@@ -33,6 +33,8 @@
 
 #include "Debug/Debug.h"
 
+#include "tests/TestIllumination.h"
+
 int main(void)
 {
     MyWindow appWindow(1920, 1080, "OpenGL Debugging");
@@ -54,7 +56,7 @@ int main(void)
     testMenu->RegisterTest<test::TestClearColor>("Test Color");
     testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
     testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
-
+    testMenu->RegisterTest<test::TestIllumination>("Test Illumination");
 
     while (!appWindow.IsClosed())
     {

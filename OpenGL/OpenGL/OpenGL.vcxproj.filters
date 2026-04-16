@@ -84,6 +84,12 @@
     <ClCompile Include="src\Debug\Debugcpp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="src\tests\TestIllumination.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\UI\SceneHierarchyPanel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\res\shaders\Basic.shader" />
@@ -508,6 +514,8 @@
       <Filter>头文件</Filter>
     </None>
     <None Include="src\res\shaders\shader2.shader" />
+    <None Include="src\res\shaders\LightingShader.shader" />
+    <None Include="src\res\shaders\LightCube.shader" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Renderer.h">
@@ -1456,6 +1464,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\Debug\Debug.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tests\TestIllumination.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\BaseNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\UI\SceneHierarchyPanel.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

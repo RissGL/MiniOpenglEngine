@@ -54,6 +54,11 @@ void Shader::SetUniformMat4f(const std::string& name,const glm::mat4& matrix)
     GLCALL(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE,&matrix[0][0]));
 }
 
+void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
+{
+    GLCALL(glUniform3f(GetUniformLocation(name), v0, v1, v2));
+}
+
 int Shader::GetUniformLocation(const std::string& name) const
 {
     if (m_UniformLocationCaChe.find(name) != m_UniformLocationCaChe.end())
