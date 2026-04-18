@@ -7,14 +7,14 @@
 #include <string>
 #include <cmath>
 
-#include "Renderer.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-#include "Shader.h"
-#include "VertexBufferLayout.h"
+#include "Base/Renderer.h"
+#include "Base/VertexBuffer.h"
+#include "Base/IndexBuffer.h"
+#include "Base/VertexArray.h"
+#include "Base/Shader.h"
+#include "Base/VertexBufferLayout.h"
 
-#include "Texture.h"
+#include "Material/Texture.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -42,6 +42,7 @@ int main(void)
     ImGui::CreateContext();
     ImGui_ImplGlfwGL3_Init(appWindow.GetNativeWindow(), true);
     ImGui::StyleColorsDark();
+
 
     glfwSetScrollCallback(appWindow.GetNativeWindow(), Input::ScrollCallback);
 

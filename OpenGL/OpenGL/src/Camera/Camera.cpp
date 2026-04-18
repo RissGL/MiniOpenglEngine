@@ -113,3 +113,14 @@ glm::mat4 Camera::GetProjectionMatrix() const
 {
 	return glm::perspective(glm::radians(m_Fov), m_AspectRatio, m_NearPlane, m_FarPlane);
 }
+
+void Camera::ProcessMousePan(float xOffset, float yOffset)
+{
+	// 平移的速度系数a
+	float panSpeed = 0.01f;
+
+	// xOffset 决定左右平移，沿着 m_Right 向量移动
+	m_Pos -= m_Right * xOffset * panSpeed;
+	// yOffset 决定上下平移，沿着 m_CameraUp 向量移动
+	m_Pos -= m_CameraUp * yOffset * panSpeed;
+}

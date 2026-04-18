@@ -4,6 +4,7 @@
 #include <tuple>
 
 #include "glm/glm.hpp"
+#include "Material/LightAndMaterial.h"
 
 class Shader
 {
@@ -20,6 +21,9 @@ public:
 	void SetUniform1i(const std::string& name, int value);
 	void SetUniform3f(const std::string& name, float v0, float v1, float v2);
 	void SetUniformMat4f(const std::string& name,const glm::mat4& proj);
+
+	void SetUniformMaterial(const std::string& name, const Material& material);
+	void SetUniformLight(const std::string& name, const Light& light);
 
 private:
 	unsigned int m_RendererID;

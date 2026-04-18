@@ -1,11 +1,11 @@
 #pragma once
 #include "tests/Test.h"
 #include <vector>
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "Base/VertexArray.h"
+#include "Base/VertexBuffer.h"
+#include "Base/IndexBuffer.h"
+#include "Base/Shader.h"
+#include "Material/Texture.h"
 
 #include <memory>
 #include "glm/glm.hpp"

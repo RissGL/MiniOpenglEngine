@@ -1,5 +1,6 @@
-#include "MyTime.h"
 #include <GLFW/glfw3.h>
+#include "MyTime.h"
+
 
 float MyTime::m_DeltaTime = 0.0f;
 float MyTime::m_LastFrameTime = 0.0f;

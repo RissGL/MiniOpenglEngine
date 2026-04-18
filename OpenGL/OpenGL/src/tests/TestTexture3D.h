@@ -1,18 +1,19 @@
 #pragma once
 #include "tests/Test.h"
 #include <vector>
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
-#include "Texture.h"
+#include "Base/VertexArray.h"
+#include "Base/VertexBuffer.h"
+#include "Base/IndexBuffer.h"
+#include "Base/Shader.h"
+#include "Material/Texture.h"
 
 #include <memory>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "GLVideoRecorder.h"
-#include "Camera.h"
+#include "Camera/Camera.h"
+#include "Camera//CameraController.h"
 
 #include "Window/MyWindow.h"
 
@@ -50,5 +51,7 @@ namespace test
 		Camera m_Camera;
 
 		float cameraSpeed;
+
+		CameraController m_CameraController;
 	};
 }

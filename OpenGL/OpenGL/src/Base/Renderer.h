@@ -6,6 +6,7 @@
 
 #include "Debug/Debug.h"
 
+class Shader;
 
 #define ASSERT(x) if(!(x)) __debugbreak()
 #define GLCALL(x) GlClearError();\

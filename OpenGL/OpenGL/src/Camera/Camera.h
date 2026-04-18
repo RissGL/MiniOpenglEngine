@@ -42,6 +42,8 @@ public:
 	void ProcessMouseMovement(float xOffset, float yOffset, bool constrainPitch=true);
 	void ProcessMouseScroll(float yOffset);
 
+	void ProcessMousePan(float xOffset, float yOffset);
+
 	//得到视图矩阵
 	glm::mat4 GetViewMatrix() const;
 	//得到投影矩阵

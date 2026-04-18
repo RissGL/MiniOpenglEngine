@@ -1,16 +1,19 @@
 #pragma once
 #include "tests/Test.h"
 #include <vector>
-#include "VertexArray.h"
-#include "VertexBuffer.h"
-#include "IndexBuffer.h"
-#include "Shader.h"
+#include "Base/VertexArray.h"
+#include "Base/VertexBuffer.h"
+#include "Base/IndexBuffer.h"
+#include "Base/Shader.h"
 #include <memory>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "GLVideoRecorder.h"
-#include "Camera.h"
+#include "Camera/Camera.h"
+#include "Material/LightAndMaterial.h"
+#include "Material/Texture.h"
+#include "Camera/CameraController.h"
 
 namespace test
 {
@@ -35,8 +38,6 @@ namespace test
 		glm::vec3 m_Scare;
 
 		glm::vec3 m_LightPos;
-		glm::vec3 m_LightColor;
-		glm::vec3 m_ObjectColor;
 
 		GLVideoRecorder m_Recorder;
 		bool m_ShowFFmpegTool = false;
@@ -45,8 +46,15 @@ namespace test
 		Camera m_Camera;
 		float cameraSpeed;
 
-		float m_LightIntensity;
-
 		std::unique_ptr<VertexArray> m_LightVao;
+
+		Material m_Material;
+		Light m_Light;
+
+		std::unique_ptr<Texture> m_DiffuseMap;
+		std::unique_ptr<Texture> m_SpecularMap;
+		std::unique_ptr<Texture> m_EmissionMap;
+
+		CameraController m_CameraController;
 	};
 }

@@ -1,5 +1,5 @@
 #include "tests/TestTexture3D.h"
-#include "VertexBufferLayout.h"
+#include "Base/VertexBufferLayout.h"
 #include "imgui/imgui.h"
 
 #include "GLFW/glfw3.h"
@@ -19,7 +19,8 @@ namespace test
 		m_Model(glm::rotate(glm::mat4(1.0f),glm::radians(0.0f),glm::vec3(1.0f,0,0))),
 		m_ClearColor{ 0.2f,0.3f,0.8f,1.0f },
 		m_Camera(glm::vec3(0.0f, 0.0f, 10.0f)),
-		cameraSpeed(2.0f)
+		cameraSpeed(2.0f),
+		m_CameraController(m_Camera)
 	{
 		float position[] = {
 	-5.0f, -5.0f,10.0f, 0.0f,0.0f,    //1.0f, 0.0f, 0.0f, 1.0f,
@@ -115,59 +116,7 @@ namespace test
 
 		m_Texture->Bind(0);
 
-		if (Input::IsKeyPressed(GLFW_KEY_W))
-		{
-			m_Camera.MoveCamera(cameraSpeed * m_Camera.GetCameraFront()*MyTime::GetDeltaTime());
-		}
-		if (Input::IsKeyPressed(GLFW_KEY_S))
-		{
-			m_Camera.MoveCamera(-cameraSpeed * m_Camera.GetCameraFront() * MyTime::GetDeltaTime());
-		}
-		if (Input::IsKeyPressed(GLFW_KEY_D))
-		{
-			m_Camera.MoveCamera(-glm::normalize(glm::cross(m_Camera.GetCameraUp(), m_Camera.GetCameraFront()))
-				*cameraSpeed * MyTime::GetDeltaTime());
-		}
-		if (Input::IsKeyPressed(GLFW_KEY_A))
-		{
-			m_Camera.MoveCamera(glm::normalize(glm::cross(m_Camera.GetCameraUp(), m_Camera.GetCameraFront()))
-				*cameraSpeed * MyTime::GetDeltaTime());
-		}
-
-		static bool firstMouse = true;
-		static float lastX = MyWindow::GetWidth()/2.0f;
-		static float lastY = MyWindow::GetHeight() / 2.0f;
-
-		float currentX = Input::GetMouseX();
-		float currentY = Input::GetMouseY();
-
-		if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT))
-		{
-			if (firstMouse)
-			{
-				lastX = currentX;
-				lastY = currentY;
-				firstMouse = false;
-			}
-
-			float xoffset = MyWindow::GetMouseOffsetX();
-			float yoffset = MyWindow::GetMouseOffsetY();
-
-			if (xoffset != 0.0f || yoffset != 0.0f)
-			{
-				m_Camera.ProcessMouseMovement(xoffset, yoffset);
-			}
-		}
-		else
-		{
-			firstMouse = true;
-		}
-
-		float scrollY = Input::GetScrollY();
-		if (scrollY!=0)
-		{
-			m_Camera.ProcessMouseScroll(scrollY);
-		}
+		m_CameraController.OnUpdate();
 
 		for (unsigned i = 0; i <1; i++)
 		{

@@ -54,6 +54,22 @@ void Shader::SetUniformMat4f(const std::string& name,const glm::mat4& matrix)
     GLCALL(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE,&matrix[0][0]));
 }
 
+void Shader::SetUniformMaterial(const std::string& name, const Material& material)
+{
+    SetUniform1i(name + ".diffuse", 0);//Âþ·´Éä²Û
+    SetUniform1i(name + ".specular", 1);//¾µÃæ·´Éä²Û
+    SetUniform1i(name + ".emission", 2);
+    SetUniform1f(name + ".shininess", material.shininess);
+}
+
+void Shader::SetUniformLight(const std::string& name, const Light& light)
+{
+    SetUniform3f(name + ".lightPos", light.lightPos.x, light.lightPos.y, light.lightPos.z);
+    SetUniform3f(name + ".ambient", light.ambient.x, light.ambient.y, light.ambient.z);
+    SetUniform3f(name + ".diffuse", light.diffuse.x, light.diffuse.y, light.diffuse.z);
+    SetUniform3f(name + ".specular", light.specular.x, light.specular.y, light.specular.z);
+}
+
 void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
 {
     GLCALL(glUniform3f(GetUniformLocation(name), v0, v1, v2));
