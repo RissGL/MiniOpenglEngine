@@ -128,12 +128,17 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		// 创建光源节点，并传指针
 		std::string lightName = "Torch Light";
 		PointLightNode* lightNode = new PointLightNode(1, lightName, m_PointLight.get());
+		std::string lightDirName = "Dir Light";
+		DirLightNode* lightNodeDir= new DirLightNode(2, lightDirName, m_SunLight.get());
 
 		// 灯光节点挂载到根节点下
 		m_RootNode->AddChild(lightNode);
+		m_RootNode->AddChild(lightNodeDir);
 
 		// 创建面板
 		m_HierarchyPanel = std::make_unique<SceneHierarchyPanel>(m_RootNode.get());
+
+		m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
 	}
 
 	TestIllumination::~TestIllumination() {}
@@ -148,9 +153,20 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		m_Light.lightPos.x = sin(time*speed)*raidus;
 		m_Light.lightPos.z= cos(time*speed)*raidus;
 		*/
+		// FBO
+		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // 防止最小化时崩溃
+			(m_Framebuffer->GetWidth() != m_ViewportSize.x || m_Framebuffer->GetHeight() != m_ViewportSize.y))
+		{
+			// 重新生成对应大小的 FBO
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 
+			// 更新摄像机的投影矩阵宽高比，防止画面被拉伸
+			m_Camera.SetAspectRatio(m_ViewportSize.x / m_ViewportSize.y);
+		}
+		m_Framebuffer->Bind();
+		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		GLCALL(glViewport(0, 0, MyWindow::GetWidth(), MyWindow::GetHeight()));
+		//GLCALL(glViewport(0, 0, MyWindow::GetWidth(), MyWindow::GetHeight()));
 		GLCALL(glEnable(GL_DEPTH_TEST));
 		GLCALL(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
 		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -213,6 +229,9 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		renderer.Draw(*m_LightVao, *m_Ibo, *m_LightCubeShader);
 
+		//FBO
+		m_Framebuffer->UnBind();
+
 		m_Recorder.CaptureFrame(MyWindow::GetWidth(), MyWindow::GetHeight());
 	}
 
@@ -220,20 +239,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 	{
 		m_HierarchyPanel->OnImGuiRender();
 
-		// --- 平行光 ---
-		ImGui::Text("Sun Light (Directional)");
-		ImGui::SliderFloat3("Sun Direction", &m_SunLight->lightDirection.x, -1.0f, 1.0f);
-		ImGui::ColorEdit3("Sun Color", &m_SunLight->baseColor.x);
-		ImGui::SliderFloat("Sun Intensity", &m_SunLight->intensity, 0.0f, 3.0f);
-
 		ImGui::Separator();
-
-		/*// --- 点光源 ---
-		ImGui::Text("Point Light (Bulb)");
-		ImGui::SliderFloat3("Light Position", &m_PointLight->position.x, -10.0f, 10.0f);
-		ImGui::ColorEdit3("Light Color", &m_PointLight->baseColor.x);
-		ImGui::SliderFloat("Light Intensity", &m_PointLight->intensity, 0.0f, 5.0f);*/
-
 		ImGui::Separator();
 
 		// --- 物体和环境控制 ---
@@ -246,5 +252,19 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		ImGui::Separator();
 		ImGui::ColorEdit4("Ambient Environment Color", m_ClearColor);
+
+
+		//自适应大小
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
+		ImGui::Begin("Scene");
+
+		ImVec2 viewportPanelSize = ImGui::GetContentRegionAvail();
+		m_ViewportSize = glm::vec2(viewportPanelSize.x, viewportPanelSize.y);
+
+		uint32_t textureID = m_Framebuffer->GetColorAttachment();
+		ImGui::Image((void*)(intptr_t)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
+
+		ImGui::End();
+		ImGui::PopStyleVar();
 	}
 }

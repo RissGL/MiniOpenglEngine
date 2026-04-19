@@ -20,6 +20,10 @@
 #include "UI/BaseNode.h"
 #include "UI/SceneHierarchyPanel.h"
 #include "Light//UI/PointLightNode.h"
+#include "Light/UI/DirLightNode.h"
+
+#include "Base/Framebuffer.h"
+
 
 namespace test
 {
@@ -69,5 +73,9 @@ namespace test
 
 		std::unique_ptr<BaseNode> m_RootNode;
 		std::unique_ptr<SceneHierarchyPanel> m_HierarchyPanel;
+
+		//Ö¡»º³åÇø
+		std::unique_ptr<Framebuffer> m_Framebuffer;
+		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 	};
 }

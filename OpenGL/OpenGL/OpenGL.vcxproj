@@ -132,6 +132,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Applacation.cpp" />
+    <ClCompile Include="src\Base\Framebuffer.cpp" />
     <ClCompile Include="src\Camera\Camera.cpp" />
     <ClCompile Include="src\Camera\CameraController.cpp" />
     <ClCompile Include="src\Debug\Debugcpp.cpp" />
@@ -153,7 +154,10 @@
     <ClCompile Include="src\vendor\imgui\imgui.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_demo.cpp" />
     <ClCompile Include="src\vendor\imgui\imgui_draw.cpp" />
-    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp" />
+    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp" />
     <ClCompile Include="src\Base\VertexArray.cpp" />
     <ClCompile Include="src\Base\VertexBuffer.cpp" />
@@ -309,6 +313,7 @@
     <None Include="src\vendor\glm\gtx\wrap.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Base\Framebuffer.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\CameraController.h" />
     <ClInclude Include="src\Debug\Debug.h" />
@@ -320,6 +325,7 @@
     <ClInclude Include="src\Light\BaseLight.h" />
     <ClInclude Include="src\Light\DirLight.h" />
     <ClInclude Include="src\Light\PointLight.h" />
+    <ClInclude Include="src\Light\UI\DirLightNode.h" />
     <ClInclude Include="src\Light\UI\PointLightNode.h" />
     <ClInclude Include="src\Material\LightAndMaterial.h" />
     <ClInclude Include="src\tests\Test.h" />
@@ -623,11 +629,13 @@
     <ClInclude Include="src\vendor\glm\vector_relational.hpp" />
     <ClInclude Include="src\vendor\imgui\imconfig.h" />
     <ClInclude Include="src\vendor\imgui\imgui.h" />
-    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3_loader.h" />
     <ClInclude Include="src\vendor\imgui\imgui_internal.h" />
-    <ClInclude Include="src\vendor\imgui\stb_rect_pack.h" />
-    <ClInclude Include="src\vendor\imgui\stb_textedit.h" />
-    <ClInclude Include="src\vendor\imgui\stb_truetype.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_textedit.h" />
+    <ClInclude Include="src\vendor\imgui\imstb_truetype.h" />
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
     <ClInclude Include="src\Base\VertexArray.h" />
     <ClInclude Include="src\Base\VertexBuffer.h" />

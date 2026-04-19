@@ -20,7 +20,8 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw_gl3.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 #include "tests/TestClearColor.h"
 #include "tests/TestMenu.h"
@@ -37,19 +38,34 @@
 
 int main(void)
 {
-    MyWindow appWindow(1920, 1080, "OpenGL Debugging");
+    MyWindow appWindow(2560, 1600, "OpenGL Debugging");
 
+    // 现代 ImGui 初始化 
+    IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGui_ImplGlfwGL3_Init(appWindow.GetNativeWindow(), true);
-    ImGuiIO& io = ImGui::GetIO();
-    io.Fonts->AddFontFromFileTTF("src/res/fonts/HarmonyOS_Sans_Medium.ttf", 22.0f, NULL,io.Fonts->GetGlyphRangesChinese());
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowRounding = 8.0f; // 窗口圆角
-    style.FrameRounding = 6.0f;  // 按钮、滑块圆角
-    style.ItemSpacing = ImVec2(8, 8); // 控件之间的间距
+    //  开启 Docking 和 多窗口魔法！
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // 允许键盘控制
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // 开启窗口停靠
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // 开启多视图 
+
+    //  加载中文字体 (替换成你电脑里的字体路径)
+    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
 
     ImGui::StyleColorsDark();
+
+    // 如果开启了多窗口，让非活跃窗口稍微透明一点，看起来更高级
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 0.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
+    // 初始化新的后端
+    ImGui_ImplGlfw_InitForOpenGL(appWindow.GetNativeWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 330");
 
     glfwSetScrollCallback(appWindow.GetNativeWindow(), Input::ScrollCallback);
 
@@ -70,8 +86,11 @@ int main(void)
     {
         MyTime::Update();
         renderer.Clear();
-        ImGui_ImplGlfwGL3_NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
 
+        ImGui::DockSpaceOverViewport(0, ImGui::GetMainViewport());
         if (currentTest)
         {
             currentTest->OnUpdate(0.0f);
@@ -88,15 +107,23 @@ int main(void)
         }
 
         ImGui::Render();
-        ImGui_ImplGlfwGL3_RenderDrawData(ImGui::GetDrawData());
-
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+        {
+            GLFWwindow* backup_current_context = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup_current_context);
+        }
         appWindow.OnUpdate();
     }
 
     if (currentTest != testMenu) delete currentTest;
     delete testMenu;
 
-    ImGui_ImplGlfwGL3_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
     ImGui::DestroyContext();
     return 0;
 }

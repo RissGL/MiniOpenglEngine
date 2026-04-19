@@ -48,9 +48,6 @@
     <ClCompile Include="src\vendor\imgui\imgui_draw.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw_gl3.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\tests\TestClearColor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -94,6 +91,21 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Light\PointLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_widgets.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_tables.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_impl_opengl3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\vendor\imgui\imgui_impl_glfw.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Base\Framebuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1427,19 +1439,7 @@
     <ClInclude Include="src\vendor\imgui\imgui.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw_gl3.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\vendor\imgui\imgui_internal.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vendor\imgui\stb_rect_pack.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vendor\imgui\stb_textedit.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="src\vendor\imgui\stb_truetype.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\tests\Test.h">
@@ -1497,6 +1497,30 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\Light\UI\PointLightNode.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imstb_truetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imstb_textedit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imstb_rectpack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_impl_glfw.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\vendor\imgui\imgui_impl_opengl3_loader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Base\Framebuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Light\UI\DirLightNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
