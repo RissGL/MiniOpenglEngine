@@ -10,12 +10,13 @@
 #include "Debug/Debug.h"
 
 
-Shader::Shader(const std::string& filepath)
-	:m_RendererID(0),filepath(filepath)
+Shader::Shader(const std::string& vertexPath, const std::string& fragmentPath)
+	:m_RendererID(0)
 {
-    auto [vertexShader,fragmentShader] = ParseShader(filepath);
+    std::string vertexSource = ReadFile(vertexPath);
+    std::string fragmentSource = ReadFile(fragmentPath);
 
-    m_RendererID = CreateShader(vertexShader, fragmentShader);
+    m_RendererID = CreateShader(vertexSource, fragmentSource);
 }
 
 Shader::~Shader() 
@@ -62,12 +63,24 @@ void Shader::SetUniformMaterial(const std::string& name, const Material& materia
     SetUniform1f(name + ".shininess", material.shininess);
 }
 
-void Shader::SetUniformLight(const std::string& name, const Light& light)
+void Shader::SetUniformLightDirectional(const std::string& name, const Light& light)
 {
-    SetUniform3f(name + ".lightPos", light.lightPos.x, light.lightPos.y, light.lightPos.z);
+    SetUniform3f(name + ".direction", light.lightDirection.x, light.lightDirection.y, light.lightDirection.z);
     SetUniform3f(name + ".ambient", light.ambient.x, light.ambient.y, light.ambient.z);
     SetUniform3f(name + ".diffuse", light.diffuse.x, light.diffuse.y, light.diffuse.z);
     SetUniform3f(name + ".specular", light.specular.x, light.specular.y, light.specular.z);
+
+    SetUniform3f(name + ".attenuation", light.attenuation.x, light.attenuation.y, light.attenuation.z);
+}
+
+void Shader::SetUniformLightPoint(const std::string& name, const Light& light)
+{
+    SetUniform3f(name + ".position", light.lightDirection.x, light.lightDirection.y, light.lightDirection.z);
+    SetUniform3f(name + ".ambient", light.ambient.x, light.ambient.y, light.ambient.z);
+    SetUniform3f(name + ".diffuse", light.diffuse.x, light.diffuse.y, light.diffuse.z);
+    SetUniform3f(name + ".specular", light.specular.x, light.specular.y, light.specular.z);
+
+    SetUniform3f(name + ".attenuation", light.attenuation.x, light.attenuation.y, light.attenuation.z);
 }
 
 void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
@@ -86,6 +99,19 @@ int Shader::GetUniformLocation(const std::string& name) const
 
     m_UniformLocationCaChe[name] = location;
     return location;
+}
+
+std::string Shader::ReadFile(const std::string& filepath)
+{
+    std::ifstream stream(filepath);
+    if (!stream.is_open()) {
+        std::cout << "错误：找不到 Shader 文件: " << filepath << std::endl;
+        return "";
+    }
+
+    std::stringstream buffer;
+    buffer << stream.rdbuf(); // 一次性把文件全部读进流里
+    return buffer.str();      // 转成 string 返回
 }
 
 unsigned int Shader::CreateShader(const std::string& vertexShaer, const std::string& fragmentShader)

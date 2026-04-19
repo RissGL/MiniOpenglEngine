@@ -60,9 +60,6 @@
     <ClCompile Include="src\Applacation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="src\tests\TestTexture2D.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="src\tests\TestTexture3D.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -91,6 +88,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="src\Camera\CameraController.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light\DirLight.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Light\PointLight.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -516,9 +519,12 @@
     <None Include="src\vendor\glm\gtx\wrap.inl">
       <Filter>头文件</Filter>
     </None>
-    <None Include="src\res\shaders\shader2.shader" />
-    <None Include="src\res\shaders\LightingShader.shader" />
-    <None Include="src\res\shaders\LightCube.shader" />
+    <None Include="src\res\shaders\LightingShader.vert" />
+    <None Include="src\res\shaders\LightingShader.frag" />
+    <None Include="src\res\shaders\LightCube.vert" />
+    <None Include="src\res\shaders\LightCube.frag" />
+    <None Include="src\res\shaders\shader2.vert" />
+    <None Include="src\res\shaders\shader2.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Base\Renderer.h">
@@ -1445,9 +1451,6 @@
     <ClInclude Include="src\tests\TestMenu.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="src\tests\TestTexture2D.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="src\tests\TestTexture3D.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -1485,6 +1488,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="src\Camera\CameraController.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Light\DirLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Light\PointLight.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Light\UI\PointLightNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

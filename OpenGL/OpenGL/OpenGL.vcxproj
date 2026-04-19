@@ -140,10 +140,11 @@
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\Base\Renderer.cpp" />
     <ClCompile Include="src\Base\Shader.cpp" />
+    <ClCompile Include="src\Light\DirLight.cpp" />
+    <ClCompile Include="src\Light\PointLight.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestIllumination.cpp" />
     <ClCompile Include="src\tests\TestMenu.cpp" />
-    <ClCompile Include="src\tests\TestTexture2D.cpp" />
     <ClCompile Include="src\tests\TestTexture3D.cpp" />
     <ClCompile Include="src\Material\Texture.cpp" />
     <ClCompile Include="src\MyTime.cpp" />
@@ -160,9 +161,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\res\shaders\Basic.shader" />
-    <None Include="src\res\shaders\LightCube.shader" />
-    <None Include="src\res\shaders\LightingShader.shader" />
-    <None Include="src\res\shaders\shader2.shader" />
+    <None Include="src\res\shaders\LightCube.frag" />
+    <None Include="src\res\shaders\LightCube.vert" />
+    <None Include="src\res\shaders\LightingShader.frag" />
+    <None Include="src\res\shaders\LightingShader.vert" />
+    <None Include="src\res\shaders\shader2.frag" />
+    <None Include="src\res\shaders\shader2.vert" />
     <None Include="src\vendor\glm\detail\func_common.inl" />
     <None Include="src\vendor\glm\detail\func_common_simd.inl" />
     <None Include="src\vendor\glm\detail\func_exponential.inl" />
@@ -314,12 +318,14 @@
     <ClInclude Include="src\Base\Renderer.h" />
     <ClInclude Include="src\Base\Shader.h" />
     <ClInclude Include="src\Light\BaseLight.h" />
+    <ClInclude Include="src\Light\DirLight.h" />
+    <ClInclude Include="src\Light\PointLight.h" />
+    <ClInclude Include="src\Light\UI\PointLightNode.h" />
     <ClInclude Include="src\Material\LightAndMaterial.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestIllumination.h" />
     <ClInclude Include="src\tests\TestMenu.h" />
-    <ClInclude Include="src\tests\TestTexture2D.h" />
     <ClInclude Include="src\tests\TestTexture3D.h" />
     <ClInclude Include="src\Material\Texture.h" />
     <ClInclude Include="src\MyTime.h" />

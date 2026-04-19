@@ -9,7 +9,7 @@ public:
 	 CameraController(Camera& camera);
 
      // 每一帧更新键盘逻辑
-     void OnUpdate();
+     void OnUpdate(float deltaTime);
 
      // 处理鼠标拖拽平移和旋转逻辑
      void OnMouseUpdate();

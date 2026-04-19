@@ -8,15 +8,15 @@ CameraController::CameraController(Camera& camera)
 {
 }
 
-void CameraController::OnUpdate()
+void CameraController::OnUpdate(float deltaTime)
 {
     //  º¸≈Ã W/A/S/D “∆∂Ø
-    if (Input::IsKeyPressed(GLFW_KEY_W)) m_Camera.MoveCamera(m_MoveSpeed * m_Camera.GetCameraFront() * MyTime::GetDeltaTime());
-    if (Input::IsKeyPressed(GLFW_KEY_S)) m_Camera.MoveCamera(-m_MoveSpeed * m_Camera.GetCameraFront() * MyTime::GetDeltaTime());
+    if (Input::IsKeyPressed(GLFW_KEY_W)) m_Camera.MoveCamera(m_MoveSpeed * m_Camera.GetCameraFront() * deltaTime);
+    if (Input::IsKeyPressed(GLFW_KEY_S)) m_Camera.MoveCamera(-m_MoveSpeed * m_Camera.GetCameraFront() * deltaTime);
     if (Input::IsKeyPressed(GLFW_KEY_A)) m_Camera.MoveCamera(-glm::normalize(glm::cross(m_Camera.GetCameraFront()
-        , m_Camera.GetCameraUp())) * m_MoveSpeed * MyTime::GetDeltaTime());
+        , m_Camera.GetCameraUp())) * m_MoveSpeed * deltaTime);
     if (Input::IsKeyPressed(GLFW_KEY_D)) m_Camera.MoveCamera(glm::normalize(glm::cross(m_Camera.GetCameraFront()
-        , m_Camera.GetCameraUp())) * m_MoveSpeed * MyTime::GetDeltaTime());
+        , m_Camera.GetCameraUp())) * m_MoveSpeed * deltaTime);
 
     //  Û±Íπˆ¬÷Àı∑≈
     float scrollY = Input::GetScrollY();

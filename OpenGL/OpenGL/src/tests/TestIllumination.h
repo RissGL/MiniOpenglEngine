@@ -15,6 +15,12 @@
 #include "Material/Texture.h"
 #include "Camera/CameraController.h"
 
+#include "Light/DirLight.h"
+#include "Light/PointLight.h"
+#include "UI/BaseNode.h"
+#include "UI/SceneHierarchyPanel.h"
+#include "Light//UI/PointLightNode.h"
+
 namespace test
 {
 	class TestIllumination : public Test
@@ -49,12 +55,19 @@ namespace test
 		std::unique_ptr<VertexArray> m_LightVao;
 
 		Material m_Material;
-		Light m_Light;
 
 		std::unique_ptr<Texture> m_DiffuseMap;
 		std::unique_ptr<Texture> m_SpecularMap;
 		std::unique_ptr<Texture> m_EmissionMap;
+		std::vector<glm::vec3> cubePositions;
+
 
 		CameraController m_CameraController;
+
+		std::unique_ptr<DirLight> m_SunLight;
+		std::unique_ptr<PointLight> m_PointLight;
+
+		std::unique_ptr<BaseNode> m_RootNode;
+		std::unique_ptr<SceneHierarchyPanel> m_HierarchyPanel;
 	};
 }

@@ -66,21 +66,23 @@ namespace test
 
 		VertexBufferLayout layout;
 		layout.Push<float>(3); // 位置
-		layout.Push<float>(3); // 改为法线，不再是纹理坐标了
+		layout.Push<float>(3); // 改为法线
 		layout.Push<float>(2);
 		m_Vao->AddBuffer(*m_Vbo, layout);
 
 		m_LightVao = std::make_unique<VertexArray>();
 		m_LightVao->AddBuffer(*m_Vbo, layout);
 
-		m_LightingShader = std::make_unique<Shader>("src/res/shaders/LightingShader.shader");
-		m_LightCubeShader = std::make_unique<Shader>("src/res/shaders/LightCube.shader");
+		m_LightingShader = std::make_unique<Shader>("src/res/shaders/LightingShader.vert",
+			"src/res/shaders/LightingShader.frag");
+		m_LightCubeShader = std::make_unique<Shader>("src/res/shaders/LightCube.vert",
+			"src/res/shaders/LightCube.frag");
 
 		m_DiffuseMap = std::make_unique<Texture>("src/res/texture/container2.png");
 		m_SpecularMap=std::make_unique<Texture>("src/res/texture/container2_specular.png");
 		m_EmissionMap = std::make_unique<Texture>("src/res/texture/matrix.jpg");
 
-
+#pragma region 光照申明
 		m_Material =
 		{
 			m_DiffuseMap.get(),
@@ -90,14 +92,48 @@ namespace test
 			32.0f                     // 反光度
 		};
 
-		m_Light = {
-			m_LightPos,                            // 位置
-			glm::vec3(1.0f, 1.0f, 1.0f),
-			0.5f,
-			glm::vec3(1.0f, 1.0f, 1.0f) * 0.2f,       // 环境光
-			glm::vec3(1.0f, 1.0f, 1.0f) * 0.5f,       // 漫反射
-			glm::vec3(1.0f, 1.0f, 1.0f) * 0.5f        // 镜面反射
+		m_SunLight = std::make_unique<DirLight>
+			(
+				glm::vec3(-0.2f, -1.0f, -0.3f), // 方向
+				glm::vec3(1.0f, 1.0f, 1.0f),    // 颜色 (白光)
+				0.5f                            // 强度
+			);
+
+		m_PointLight = std::make_unique<PointLight>
+			(
+				m_LightPos,
+				glm::vec3(1.0f, 0.09f, 0.032f),
+
+				glm::vec3(1.0f, 1.0f, 1.0f),    // 颜色 (白光)
+				0.5f                            // 强度
+			);
+#pragma endregion
+
+		cubePositions = {
+glm::vec3(0.0f,  0.0f,  0.0f),
+glm::vec3(1.0f,  3.0f, -3.0f),
+glm::vec3(-1.5f, -2.2f, -2.5f),
+glm::vec3(-3.8f, -2.0f, -12.3f),
+glm::vec3(2.4f, -0.4f, -3.5f),
+glm::vec3(-1.7f,  3.0f, -7.5f),
+glm::vec3(1.3f, -2.0f, -2.5f),
+glm::vec3(1.5f,  2.0f, -2.5f),
+glm::vec3(1.5f,  0.2f, -1.5f),
+glm::vec3(-1.3f,  1.0f, -1.5f)
 		};
+
+		std::string rootName = "Scene Root";
+		m_RootNode = std::make_unique<BaseNode>(0, rootName);
+
+		// 创建光源节点，并传指针
+		std::string lightName = "Torch Light";
+		PointLightNode* lightNode = new PointLightNode(1, lightName, m_PointLight.get());
+
+		// 灯光节点挂载到根节点下
+		m_RootNode->AddChild(lightNode);
+
+		// 创建面板
+		m_HierarchyPanel = std::make_unique<SceneHierarchyPanel>(m_RootNode.get());
 	}
 
 	TestIllumination::~TestIllumination() {}
@@ -112,7 +148,6 @@ namespace test
 		m_Light.lightPos.x = sin(time*speed)*raidus;
 		m_Light.lightPos.z= cos(time*speed)*raidus;
 		*/
-		m_Light.Update();
 
 
 		GLCALL(glViewport(0, 0, MyWindow::GetWidth(), MyWindow::GetHeight()));
@@ -120,7 +155,7 @@ namespace test
 		GLCALL(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
 		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		m_CameraController.OnUpdate();
+		m_CameraController.OnUpdate(MyTime::GetDeltaTime());
 		Renderer renderer;
 
 		// 渲染被光照的物体 ---
@@ -130,34 +165,49 @@ namespace test
 
 		// 传光照参数给 Shader
 		m_LightingShader->SetUniform3f("u_ViewPos", m_Camera.GetCameraPos().x, m_Camera.GetCameraPos().y, m_Camera.GetCameraPos().z);
-		m_LightingShader->SetUniformLight("u_Light",m_Light);
+		//m_LightingShader->SetUniformLightDirectional("u_Light", m_Light);
 		//传材质
-		m_LightingShader->SetUniformMaterial("u_Material",m_Material);
+		m_LightingShader->SetUniformMaterial("u_Material", m_Material);
+
+		m_SunLight->BindToShader(*m_LightingShader,"u_DirLight");
+		m_PointLight->BindToShader(*m_LightingShader, "u_PointLight");
 
 		if (m_Material.mapDiffuse != nullptr)
 		{
 			m_Material.mapDiffuse->Bind(0);
 		}
 
-		if (m_Material.specularMap!=nullptr)
+		if (m_Material.specularMap != nullptr)
 		{
 			m_Material.specularMap->Bind(1);
 		}
 
-		glm::mat4 model= glm::translate(glm::mat4(1.0f), m_Translation);
-		model = glm::scale(model, m_Scare);
-		m_LightingShader->SetUniformMat4f("u_Model", model);
 
-		renderer.Draw(*m_Vao, *m_Ibo, *m_LightingShader);
+		for (unsigned i = 0; i < 10; i++)
+		{
+
+			float angle = 20.0f * i;
+
+			glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
+			model = glm::scale(model, m_Scare);
+
+			model = glm::translate(model, cubePositions[i]);
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(0, 0, 1));
+
+			m_LightingShader->SetUniformMat4f("u_Model", model);
+
+			renderer.Draw(*m_Vao, *m_Ibo, *m_LightingShader);
+		}
+		
 
 		m_LightCubeShader->Bind();
 		m_LightCubeShader->SetUniformMat4f("u_View", m_Camera.GetViewMatrix());
 		m_LightCubeShader->SetUniformMat4f("u_Projection", m_Camera.GetProjectionMatrix());
-		m_LightCubeShader->SetUniform3f("u_LightColor", m_Light.baseColor.x, m_Light.baseColor.y, m_Light.baseColor.z);
-		m_LightCubeShader->SetUniform1f("u_LightIntensity", m_Light.intensity);
+		m_LightCubeShader->SetUniform3f("u_LightColor", m_PointLight->baseColor.x, m_PointLight->baseColor.y, m_PointLight->baseColor.z);
+		m_LightCubeShader->SetUniform1f("u_LightIntensity", m_PointLight->intensity);
 
 		glm::mat4 lightModel = glm::mat4(1.0f);
-		lightModel = glm::translate(lightModel, m_Light.lightPos); // 移动到光源位置
+		lightModel = glm::translate(lightModel,m_PointLight->position); // 移动到光源位置
 		lightModel = glm::scale(lightModel, glm::vec3(0.2f)); // 缩小一点
 		m_LightCubeShader->SetUniformMat4f("u_Model", lightModel);
 
@@ -168,18 +218,30 @@ namespace test
 
 	void TestIllumination::OnImGuiRender()
 	{
-		ImGui::Text("Light Settings");
-		ImGui::SliderFloat3("Light Position", &m_Light.lightPos.x, -5.0f, 5.0f);
-		ImGui::ColorEdit3("Light Color", &m_Light.baseColor.x);
-		ImGui::SliderFloat("Light Intensity", &m_Light.intensity, 0.0f, 2.0f);
+		m_HierarchyPanel->OnImGuiRender();
+
+		// --- 平行光 ---
+		ImGui::Text("Sun Light (Directional)");
+		ImGui::SliderFloat3("Sun Direction", &m_SunLight->lightDirection.x, -1.0f, 1.0f);
+		ImGui::ColorEdit3("Sun Color", &m_SunLight->baseColor.x);
+		ImGui::SliderFloat("Sun Intensity", &m_SunLight->intensity, 0.0f, 3.0f);
 
 		ImGui::Separator();
+
+		/*// --- 点光源 ---
+		ImGui::Text("Point Light (Bulb)");
+		ImGui::SliderFloat3("Light Position", &m_PointLight->position.x, -10.0f, 10.0f);
+		ImGui::ColorEdit3("Light Color", &m_PointLight->baseColor.x);
+		ImGui::SliderFloat("Light Intensity", &m_PointLight->intensity, 0.0f, 5.0f);*/
+
+		ImGui::Separator();
+
+		// --- 物体和环境控制 ---
 		ImGui::Text("Object Settings");
 		ImGui::SliderFloat3("Object Translation", &m_Translation.x, -5.0f, 5.0f);
 		ImGui::SliderFloat3("Object Scale", &m_Scare.x, 0.1f, 5.0f);
 
 		ImGui::Text("Material Settings");
-
 		ImGui::SliderFloat("Shininess", &m_Material.shininess, 2.0f, 256.0f);
 
 		ImGui::Separator();

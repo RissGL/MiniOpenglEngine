@@ -1,4 +1,5 @@
 #include "SceneHierarchyPanel.h"
+#include "Window/MyWindow.h"
 
 void SceneHierarchyPanel::DrawNodeTree(BaseNode* node)
 {
@@ -26,6 +27,13 @@ void SceneHierarchyPanel::DrawNodeTree(BaseNode* node)
 
 void SceneHierarchyPanel::OnImGuiRender()
 {
+    float panelWidth = 280.0f;
+
+    // 固定层级面板 (Scene Hierarchy)
+    ImGui::SetNextWindowPos(ImVec2(0.0f, 0.0f), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(panelWidth, (float)MyWindow::GetHeight()), ImGuiCond_Always);
+    ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+
     // 画层级面板 
     ImGui::Begin("Scene Hierarchy");
     DrawNodeTree(m_ContextNode);
@@ -36,19 +44,22 @@ void SceneHierarchyPanel::OnImGuiRender()
 
     ImGui::End();
 
-    // 画属性面板 
-    ImGui::Begin("Properties (Inspector)");
+    // 右侧：固定属性面板 (Properties)
+
+    ImGui::SetNextWindowPos(ImVec2((float)MyWindow::GetWidth() - panelWidth, 0.0f), ImGuiCond_Always);
+    ImGui::SetNextWindowSize(ImVec2(panelWidth, (float)MyWindow::GetHeight()), ImGuiCond_Always);
+
+    ImGui::Begin("Properties (Inspector)", nullptr, windowFlags);
     if (m_SelectionContext != nullptr)
     {
-        // 显示选中节点的名字
         ImGui::Text("Name: %s", m_SelectionContext->nodeName.c_str());
         ImGui::Separator();
-        // 调用节点自己的多态函数画属性
+
         m_SelectionContext->OnImGuiRenderAttributes();
     }
     else
     {
-        ImGui::Text("Select a node to view properties.");
+        ImGui::TextDisabled("Select a node to view properties."); // 使用 TextDisabled 让未选中时的提示文字变灰
     }
     ImGui::End();
 }

@@ -41,8 +41,15 @@ int main(void)
 
     ImGui::CreateContext();
     ImGui_ImplGlfwGL3_Init(appWindow.GetNativeWindow(), true);
-    ImGui::StyleColorsDark();
+    ImGuiIO& io = ImGui::GetIO();
+    io.Fonts->AddFontFromFileTTF("src/res/fonts/HarmonyOS_Sans_Medium.ttf", 22.0f, NULL,io.Fonts->GetGlyphRangesChinese());
 
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.WindowRounding = 8.0f; // ´°¿ÚÔ²½Ç
+    style.FrameRounding = 6.0f;  // °´Å¥¡¢»¬¿éÔ²½Ç
+    style.ItemSpacing = ImVec2(8, 8); // ¿Ø¼şÖ®¼äµÄ¼ä¾à
+
+    ImGui::StyleColorsDark();
 
     glfwSetScrollCallback(appWindow.GetNativeWindow(), Input::ScrollCallback);
 
@@ -55,7 +62,7 @@ int main(void)
     currentTest = testMenu;
 
     testMenu->RegisterTest<test::TestClearColor>("Test Color");
-    testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
+    //testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
     testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
     testMenu->RegisterTest<test::TestIllumination>("Test Illumination");
 

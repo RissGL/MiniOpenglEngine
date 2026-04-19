@@ -72,7 +72,8 @@ namespace test
 		layout.Push<float>(3);
 		layout.Push<float>(2);
 
-		m_Shader = std::make_unique<Shader>("src/res/shaders/shader2.shader");
+		m_Shader = std::make_unique<Shader>("src/res/shaders/shader2.vert",
+			"src/res/shaders/shader2.frag");
 		m_Texture = std::make_unique<Texture>("src/res/texture/2000x2000bb-100 (4).jpg");
 
 		m_Vao->AddBuffer(*m_Vbo, layout);
@@ -116,7 +117,7 @@ namespace test
 
 		m_Texture->Bind(0);
 
-		m_CameraController.OnUpdate();
+		m_CameraController.OnUpdate(MyTime::GetDeltaTime());
 
 		for (unsigned i = 0; i <1; i++)
 		{
