@@ -2,6 +2,11 @@
 
 GameObject::GameObject(const std::string& name)
 {
+	auto t = std::make_shared<Transform>();
+	t->gameObject = this;
+	t->transform = t.get(); 
+	components.push_back(t);
+	transform = t.get();
 }
 void GameObject::Awake()
 {
@@ -39,27 +44,4 @@ void GameObject::Draw(Shader& shader)
 	if (!activeSelf) return;
 	for (auto& comp : components) if (comp->enabled) comp->Draw(shader);
 }
-template<typename T, typename ...Args>
-T* GameObject::AddComponent(Args && ...args)
-{
-	static_assert(std::is_base_of<Component, T>::value, "´íÎó: ½Å±¾±ØÐë¼Ì³Ðcommpent");
-	std::shared_ptr <T> newComp = std::make_shared<T>(std::forward<Args>(args)...);
-	newComp->gameObject = this;
-	newComp->transform = this;
 
-	components.push_back(newComp);
-	newComp->Awake();
-	return newComp.get();
-}
-
-template<typename T>
-T* GameObject::GetComponent()
-{
-	static_assert(std::is_base_of<Component, T>::value, "´íÎó: ½Å±¾±ØÐë¼Ì³Ðcommpent");
-
-	for (auto& comp : components) {
-		T* target = dynamic_cast<T*>(comp.get());
-		if (target) return target;
-	}
-	return nullptr;
-}

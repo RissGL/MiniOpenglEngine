@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <vector>
 
-class Transform
+class Transform :public Component
 {
 public:
 	glm::vec3 localPosition=glm::vec3(0.0f);
@@ -13,6 +13,8 @@ public:
 
 	Transform* parent = nullptr;
 	std::vector<Transform*> children;
+
+	~Transform()override = default;
 
 	void SetParent(Transform* newParent);
 

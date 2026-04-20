@@ -11,11 +11,11 @@ public:
 
 	bool enabled = true;
 
-	Component();
-	~Component();
+	Component() = default;
+	virtual ~Component() = default;
 
-	virtual void Awake();
-	virtual void Start();
-	virtual void Update(float deltaTime);
+	virtual void Awake() {};
+	virtual void Start() {};
+	virtual void Update(float deltaTime) {};
 	virtual void Draw(Shader& shader) {}
 };
