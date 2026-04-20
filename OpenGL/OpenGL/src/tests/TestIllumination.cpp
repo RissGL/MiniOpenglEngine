@@ -17,6 +17,7 @@ namespace test
 		m_LightPos(1.2f, 1.0f, 2.0f),       // 初始光源位置
 		m_CameraController(m_Camera)
 	{
+		/*
 		// 包含法线的 24 顶点标准立方体 (位置 x,y,z + 法线 nx,ny,nz)
 		float vertices[] = {
 			// 前面 (法线 0,0,1)
@@ -71,7 +72,7 @@ namespace test
 		m_Vao->AddBuffer(*m_Vbo, layout);
 
 		m_LightVao = std::make_unique<VertexArray>();
-		m_LightVao->AddBuffer(*m_Vbo, layout);
+		m_LightVao->AddBuffer(*m_Vbo, layout);*/
 
 		m_LightingShader = std::make_unique<Shader>("src/res/shaders/LightingShader.vert",
 			"src/res/shaders/LightingShader.frag");
@@ -107,6 +108,17 @@ namespace test
 				glm::vec3(1.0f, 1.0f, 1.0f),    // 颜色 (白光)
 				0.5f                            // 强度
 			);
+
+		m_SpotLight = std::make_unique<SpotLight>
+			(
+				glm::vec3(0.0f), 
+				glm::vec3(1.0f, 0.045f, 0.0075f),
+				glm::vec3(0.0f, 0.0f, 1.0f),
+				glm::vec3(1.0f),
+				12.5f, 
+				25.0f, 
+				1.0f
+			);
 #pragma endregion
 
 		cubePositions = {
@@ -130,15 +142,20 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		PointLightNode* lightNode = new PointLightNode(1, lightName, m_PointLight.get());
 		std::string lightDirName = "Dir Light";
 		DirLightNode* lightNodeDir= new DirLightNode(2, lightDirName, m_SunLight.get());
+		std::string lightSpotName = "SpotLight";
+		SpotLightNode* spotLightNode = new SpotLightNode(3, lightSpotName, m_SpotLight.get());
 
 		// 灯光节点挂载到根节点下
 		m_RootNode->AddChild(lightNode);
 		m_RootNode->AddChild(lightNodeDir);
+		m_RootNode->AddChild(spotLightNode);
 
 		// 创建面板
 		m_HierarchyPanel = std::make_unique<SceneHierarchyPanel>(m_RootNode.get());
 
 		m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
+
+		m_MyModel = std::make_unique<Mesh>("src/res/models/HatsuneMikuNT.fbx");
 	}
 
 	TestIllumination::~TestIllumination() {}
@@ -154,22 +171,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		m_Light.lightPos.z= cos(time*speed)*raidus;
 		*/
 		// FBO
-		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // 防止最小化时崩溃
-			(m_Framebuffer->GetWidth() != m_ViewportSize.x || m_Framebuffer->GetHeight() != m_ViewportSize.y))
-		{
-			// 重新生成对应大小的 FBO
-			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
-
-			// 更新摄像机的投影矩阵宽高比，防止画面被拉伸
-			m_Camera.SetAspectRatio(m_ViewportSize.x / m_ViewportSize.y);
-		}
-		m_Framebuffer->Bind();
-		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
-
-		//GLCALL(glViewport(0, 0, MyWindow::GetWidth(), MyWindow::GetHeight()));
-		GLCALL(glEnable(GL_DEPTH_TEST));
-		GLCALL(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
-		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+		BeginScene();
 
 		m_CameraController.OnUpdate(MyTime::GetDeltaTime());
 		Renderer renderer;
@@ -187,6 +189,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		m_SunLight->BindToShader(*m_LightingShader,"u_DirLight");
 		m_PointLight->BindToShader(*m_LightingShader, "u_PointLight");
+		m_SpotLight->BindToShader(*m_LightingShader, "u_SpotLight");
 
 		if (m_Material.mapDiffuse != nullptr)
 		{
@@ -199,7 +202,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		}
 
 
-		for (unsigned i = 0; i < 10; i++)
+		/*for (unsigned i = 0; i < 10; i++)
 		{
 
 			float angle = 20.0f * i;
@@ -213,8 +216,14 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 			m_LightingShader->SetUniformMat4f("u_Model", model);
 
 			renderer.Draw(*m_Vao, *m_Ibo, *m_LightingShader);
-		}
+		}*/
 		
+		glm::mat4 model = glm::translate(glm::mat4(1.0f), m_Translation);
+		model = glm::scale(model, m_Scare);
+		m_LightingShader->SetUniformMat4f("u_Model", model);
+
+		// 见证奇迹的时刻：一句话画出几万个顶点的复杂模型！
+		m_MyModel->Draw(*m_LightingShader);
 
 		m_LightCubeShader->Bind();
 		m_LightCubeShader->SetUniformMat4f("u_View", m_Camera.GetViewMatrix());
@@ -227,10 +236,9 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		lightModel = glm::scale(lightModel, glm::vec3(0.2f)); // 缩小一点
 		m_LightCubeShader->SetUniformMat4f("u_Model", lightModel);
 
-		renderer.Draw(*m_LightVao, *m_Ibo, *m_LightCubeShader);
+		//renderer.Draw(*m_LightVao, *m_Ibo, *m_LightCubeShader);
 
-		//FBO
-		m_Framebuffer->UnBind();
+		EndScene();
 
 		m_Recorder.CaptureFrame(MyWindow::GetWidth(), MyWindow::GetHeight());
 	}
@@ -266,5 +274,36 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		ImGui::End();
 		ImGui::PopStyleVar();
+	}
+
+	/// <summary>
+	/// 开始场景
+	/// </summary>
+	void TestIllumination::BeginScene()
+	{
+		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && // 防止最小化时崩溃
+			(m_Framebuffer->GetWidth() != m_ViewportSize.x || m_Framebuffer->GetHeight() != m_ViewportSize.y))
+		{
+			// 重新生成对应大小的 FBO
+			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
+
+			// 更新摄像机的投影矩阵宽高比，防止画面被拉伸
+			m_Camera.SetAspectRatio(m_ViewportSize.x / m_ViewportSize.y);
+		}
+		m_Framebuffer->Bind();
+		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+
+		//GLCALL(glViewport(0, 0, MyWindow::GetWidth(), MyWindow::GetHeight()));
+		GLCALL(glEnable(GL_DEPTH_TEST));
+		GLCALL(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
+		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+	}
+
+	/// <summary>
+	/// 结束场景
+	/// </summary>
+	void TestIllumination::EndScene()
+	{
+		m_Framebuffer->UnBind();
 	}
 }

@@ -133,6 +133,7 @@
   <ItemGroup>
     <ClCompile Include="src\Applacation.cpp" />
     <ClCompile Include="src\Base\Framebuffer.cpp" />
+    <ClCompile Include="src\Base\ufbx.c" />
     <ClCompile Include="src\Camera\Camera.cpp" />
     <ClCompile Include="src\Camera\CameraController.cpp" />
     <ClCompile Include="src\Debug\Debugcpp.cpp" />
@@ -143,6 +144,8 @@
     <ClCompile Include="src\Base\Shader.cpp" />
     <ClCompile Include="src\Light\DirLight.cpp" />
     <ClCompile Include="src\Light\PointLight.cpp" />
+    <ClCompile Include="src\Light\SpotLight.cpp" />
+    <ClCompile Include="src\Model\Mesh.cpp" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestIllumination.cpp" />
     <ClCompile Include="src\tests\TestMenu.cpp" />
@@ -314,6 +317,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Base\Framebuffer.h" />
+    <ClInclude Include="src\Base\ufbx.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\CameraController.h" />
     <ClInclude Include="src\Debug\Debug.h" />
@@ -325,9 +329,12 @@
     <ClInclude Include="src\Light\BaseLight.h" />
     <ClInclude Include="src\Light\DirLight.h" />
     <ClInclude Include="src\Light\PointLight.h" />
+    <ClInclude Include="src\Light\SpotLight.h" />
     <ClInclude Include="src\Light\UI\DirLightNode.h" />
     <ClInclude Include="src\Light\UI\PointLightNode.h" />
+    <ClInclude Include="src\Light\UI\SpotLight.h" />
     <ClInclude Include="src\Material\LightAndMaterial.h" />
+    <ClInclude Include="src\Model\Mesh.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestIllumination.h" />

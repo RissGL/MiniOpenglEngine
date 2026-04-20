@@ -17,13 +17,16 @@
 
 #include "Light/DirLight.h"
 #include "Light/PointLight.h"
+#include "Light/SpotLight.h"
 #include "UI/BaseNode.h"
 #include "UI/SceneHierarchyPanel.h"
 #include "Light//UI/PointLightNode.h"
 #include "Light/UI/DirLightNode.h"
+#include "Light/UI/SpotLight.h"
 
 #include "Base/Framebuffer.h"
 
+#include "Model/Mesh.h"
 
 namespace test
 {
@@ -35,6 +38,8 @@ namespace test
 		void OnUpdate(float deltaTime) override;
 		void OnRender() override;
 		void OnImGuiRender() override;
+		void BeginScene();
+		void EndScene();
 
 	private:
 		std::unique_ptr<VertexArray> m_Vao;
@@ -70,6 +75,7 @@ namespace test
 
 		std::unique_ptr<DirLight> m_SunLight;
 		std::unique_ptr<PointLight> m_PointLight;
+		std::unique_ptr<SpotLight> m_SpotLight;
 
 		std::unique_ptr<BaseNode> m_RootNode;
 		std::unique_ptr<SceneHierarchyPanel> m_HierarchyPanel;
@@ -77,5 +83,7 @@ namespace test
 		//Ö¡»º³åÇø
 		std::unique_ptr<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+
+		std::unique_ptr<Mesh> m_MyModel;
 	};
 }
