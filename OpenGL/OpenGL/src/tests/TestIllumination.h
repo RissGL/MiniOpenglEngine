@@ -27,6 +27,7 @@
 #include "Base/Framebuffer.h"
 
 #include "Model/Mesh.h"
+#include "Model/Model.h"
 
 namespace test
 {
@@ -84,6 +85,6 @@ namespace test
 		std::unique_ptr<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 
-		std::unique_ptr<Mesh> m_MyModel;
+		std::unique_ptr<Model> m_MyModel;
 	};
 }

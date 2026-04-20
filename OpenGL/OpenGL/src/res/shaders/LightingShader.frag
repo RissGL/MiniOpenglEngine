@@ -142,7 +142,7 @@ void main()
     vec3 norm =normalize(Normal);
 
     vec3 viewDir=normalize(u_ViewPos-FragPos);
-    vec3 globalAmbient = vec3(texture(u_Material.diffuse, TexCoords)) * 0.25;
+    vec3 globalAmbient = vec3(texture(u_Material.diffuse, TexCoords)) * 0.08;
     vec3 result = vec3(0.0);
 
     result+=globalAmbient;

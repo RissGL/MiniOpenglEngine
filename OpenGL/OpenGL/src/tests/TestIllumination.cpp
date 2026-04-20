@@ -79,7 +79,7 @@ namespace test
 		m_LightCubeShader = std::make_unique<Shader>("src/res/shaders/LightCube.vert",
 			"src/res/shaders/LightCube.frag");
 
-		m_DiffuseMap = std::make_unique<Texture>("src/res/texture/container2.png");
+		m_DiffuseMap = std::make_unique<Texture>("src/res/texture/PolygonPrototype_Texture_01.png");
 		m_SpecularMap=std::make_unique<Texture>("src/res/texture/container2_specular.png");
 		m_EmissionMap = std::make_unique<Texture>("src/res/texture/matrix.jpg");
 
@@ -155,7 +155,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
 
-		m_MyModel = std::make_unique<Mesh>("src/res/models/HatsuneMikuNT.fbx");
+		m_MyModel = std::make_unique<Model>("src/res/models/Characters.fbx","Character_Dummy_Male_01");
 	}
 
 	TestIllumination::~TestIllumination() {}
