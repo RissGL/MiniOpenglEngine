@@ -2,9 +2,10 @@
 #include "CameraController.h"
 
 
-CameraController::CameraController(Camera& camera)
+CameraController::CameraController(Camera& camera,CameraType type)
     : m_Camera(camera), m_MoveSpeed(2.0f), m_PanSpeed(0.01f),
-    m_FirstMouse(true), m_LastX(0.0f), m_LastY(0.0f)
+    m_FirstMouse(true), m_LastX(0.0f), m_LastY(0.0f),
+    cameraType(type)
 {
 }
 
@@ -24,7 +25,6 @@ void CameraController::OnUpdate(float deltaTime)
         m_Camera.ProcessMouseScroll(scrollY);
     }
 
-    // 调用鼠标更新逻辑
     OnMouseUpdate();
 }
 void CameraController::OnMouseUpdate() 
@@ -52,4 +52,19 @@ void CameraController::OnMouseUpdate()
     if (!Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT) && !Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE)) {
         m_FirstMouse = true;
     }
+}
+
+void CameraController::SetCmeraSpeed(float newSpeed)
+{
+    m_MoveSpeed = newSpeed;
+}
+
+float CameraController::GetCameraMoveSpeed() const
+{
+    return m_MoveSpeed;
+}
+
+Camera& CameraController::GetCamera() const
+{
+    return m_Camera;
 }

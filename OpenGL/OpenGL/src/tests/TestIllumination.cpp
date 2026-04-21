@@ -155,7 +155,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
 
-		m_MyModel = std::make_unique<Model>("src/res/models/Characters.fbx","Character_Dummy_Male_01");
+		m_MyModel = std::make_unique<Model>("src/res/models/Characters_psx/Models/Killers/Character_Killer.fbx");
 	}
 
 	TestIllumination::~TestIllumination() {}
@@ -163,13 +163,6 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 	void TestIllumination::OnRender()
 	{
-		/*float speed = 1.5f;
-		float raidus = 1.0f;
-		float time = MyTime::GetTime();
-
-		m_Light.lightPos.x = sin(time*speed)*raidus;
-		m_Light.lightPos.z= cos(time*speed)*raidus;
-		*/
 		// FBO
 		BeginScene();
 

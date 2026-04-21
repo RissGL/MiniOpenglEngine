@@ -35,6 +35,7 @@
 #include "Debug/Debug.h"
 
 #include "tests/TestIllumination.h"
+#include "tests/TestHorrorMaze.h"
 
 int main(void)
 {
@@ -81,6 +82,7 @@ int main(void)
     //testMenu->RegisterTest<test::TestTexture2D>("Test Texture 2D");
     testMenu->RegisterTest<test::TestTexture3D>("Test Texture 3D");
     testMenu->RegisterTest<test::TestIllumination>("Test Illumination");
+    testMenu->RegisterTest<test::TestHorrorMaze>("Tesr Horror Maze");
 
     while (!appWindow.IsClosed())
     {
