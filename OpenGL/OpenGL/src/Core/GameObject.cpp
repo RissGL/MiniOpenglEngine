@@ -45,3 +45,8 @@ void GameObject::Draw(Shader& shader)
 	for (auto& comp : components) if (comp->enabled) comp->Draw(shader);
 }
 
+std::string GameObject::GetName() const
+{
+	return name;
+}
+

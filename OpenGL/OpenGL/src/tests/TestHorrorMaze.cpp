@@ -3,39 +3,76 @@
 #include "Window/MyWindow.h"
 #include "imgui/imgui.h"
 #include "MyTime.h"
+#include "Demo/Flashlight.h"
+#include "Core/BoxCollider.h"
+#include "Demo/MazePrefabFactory.h"
+
 
 test::TestHorrorMaze::TestHorrorMaze()
-	:m_Camera(glm::vec3(0.0,1.7,0.0)),
-	m_CameraController(m_Camera,CameraType::Game)
+	:m_Camera(std::make_shared<Camera>( glm::vec3(0.0f,1.5f,0.0f)))
 {
 	m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
 
 	m_LightingShader = std::make_unique<Shader>("src/res/shaders/LightingShader.vert",
 		"src/res/shaders/LightingShader.frag");
 
-	m_MonsterModel = std::make_shared<Model>("src/res/models/Characters_psx/Models/Killers/Character_Killer.fbx");
+	//m_MonsterModel = std::make_shared<Model>("src/res/models/Characters_psx/Models/Killers/Character_Killer.fbx");
+	//m_MonsterModel = std::make_shared<Model>("src/res/models/Characters.fbx");
+	m_SewerModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx","Serwers01_003");
+	auto sewer = std::make_shared<GameObject>("Sewer");
+	sewer->transform->localPosition = glm::vec3(0.0f, 0.0f, -5.0f); // 放在摄像机正前方 5 米处
+	sewer->transform->localEulerAngles = glm::vec3(-90.0f, 0.0f, 0.0f);
+	//sewer->transform->localScale = glm::vec3(0.01f);
 
-	auto monster = std::make_shared<GameObject>("Monster_SlenderMan");
-	monster->transform->localPosition = glm::vec3(0.0f, 0.0f, -5.0f); // 放在摄像机正前方 5 米处
-	monster->transform->localScale = glm::vec3(0.005f);
+	sewer->AddComponent<MeshRenderer>(m_SewerModel);
+	m_GameObjects.push_back(sewer);
 
-	monster->AddComponent<MeshRenderer>(m_MonsterModel);
+	m_SpotLight = std::make_shared<SpotLight>
+		(
+			glm::vec3(0.0f,1.5f,0.0f),
+			glm::vec3(1.0f, 0.045f, 0.0075f),
+			glm::vec3(0.0f, 0.0f, -1.0f),
+			glm::vec3(1.0f),
+			12.5f,
+			25.5f,
+			1.0f
+		);
 
-	// 塞进场景
-	m_GameObjects.push_back(monster);
+	GenerateMaze();
+
+	player = std::make_shared<GameObject>("Player");
+	player->transform->localPosition = glm::vec3(0.0f, 1.5f, 0.0f);
+	player->AddComponent<FirstPersonController>(m_Camera);
+	//player->AddComponent<BoxCollider>(glm::vec3(0.6f, 1.8f, 0.6f));
+	m_GameObjects.push_back(player);
+
+	flashlight = std::make_shared<GameObject>("Flashlight");
+	m_FlashlightModel = std::make_shared<Model>("src/res/models/flashlight/flashlight.fbx");
+	flashlight->transform->SetParent(player->transform);
+	flashlight->transform->localPosition = glm::vec3(0.3f, -0.4f, -0.4f);
+	flashlight->transform->localScale= glm::vec3(0.08f);
+	flashlight->AddComponent<Flashlight>(m_SpotLight, *m_LightingShader,"u_SpotLight");
+	flashlight->AddComponent<MeshRenderer>(m_FlashlightModel);
+	m_GameObjects.push_back(flashlight);
 
 	//唤醒所有物体
 	for (auto& go : m_GameObjects) {
 		go->Awake();
 	}
+
+	for (auto& go : m_GameObjects) {
+		go->Start();
+	}
 }
 
 void test::TestHorrorMaze::OnUpdate(float deltaTime)
 {
-	m_CameraController.OnUpdate(deltaTime);
-
+	if (m_SpotLight && m_Camera) {
+		m_SpotLight->direction = m_Camera->GetCameraFront();
+		//flashlight->transform->localPosition = m_Camera->GetCameraPos();
+	}
 	for (auto& go : m_GameObjects) {
-		go->Update(deltaTime);
+		go->Update(MyTime::GetDeltaTime());
 	}
 }
 
@@ -44,10 +81,12 @@ void test::TestHorrorMaze::OnRender()
 	BeginScene();
 	m_LightingShader->Bind();
 
-	m_LightingShader->SetUniformMat4f("u_View", m_CameraController.GetCamera().GetViewMatrix());
-	m_LightingShader->SetUniformMat4f("u_Projection", m_CameraController.GetCamera().GetProjectionMatrix());
+	m_LightingShader->SetUniformMat4f("u_View", m_Camera->GetViewMatrix());
+	m_LightingShader->SetUniformMat4f("u_Projection", m_Camera->GetProjectionMatrix());
 
-	m_CameraController.OnUpdate(MyTime::GetDeltaTime());
+	m_LightingShader->SetUniform3f("u_ViewPos", m_Camera->GetCameraPos().x, m_Camera->GetCameraPos().y, m_Camera->GetCameraPos().z);
+
+	//m_CameraController.OnUpdate(MyTime::GetDeltaTime());
 
 	for (auto& go : m_GameObjects) {
 		go->Draw(*m_LightingShader);
@@ -69,6 +108,54 @@ void test::TestHorrorMaze::OnImGuiRender()
 	ImGui::Image((void*)(intptr_t)textureID, ImVec2{ m_ViewportSize.x, m_ViewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
 	ImGui::End();
+
+	ImGui::Begin("Scene Inspector");
+
+	static int selectedObjIndex = -1; // 记录当前选中的物体
+
+	// 1. 制作一个下拉菜单，列出所有的 GameObject
+	std::string previewValue = (selectedObjIndex >= 0 && selectedObjIndex < m_GameObjects.size())
+		? m_GameObjects[selectedObjIndex]->GetName()
+		: "Select an Object...";
+
+	if (ImGui::BeginCombo("Objects", previewValue.c_str()))
+	{
+		for (int i = 0; i < m_GameObjects.size(); i++)
+		{
+			bool isSelected = (selectedObjIndex == i);
+			if (ImGui::Selectable(m_GameObjects[i]->GetName().c_str(), isSelected)) {
+				selectedObjIndex = i;
+			}
+			if (isSelected) ImGui::SetItemDefaultFocus();
+		}
+		ImGui::EndCombo();
+	}
+
+	ImGui::Separator();
+
+	if (selectedObjIndex >= 0 && selectedObjIndex < m_GameObjects.size())
+	{
+		auto obj = m_GameObjects[selectedObjIndex];
+
+		ImGui::Text("Transform:");
+
+		ImGui::DragFloat3("Position", &obj->transform->localPosition.x, 0.1f);
+
+		ImGui::DragFloat3("Rotation", &obj->transform->localEulerAngles.x, 1.0f);
+
+		ImGui::DragFloat3("Scale", &obj->transform->localScale.x, 0.01f);
+
+		auto collider = obj->GetComponent<BoxCollider>();
+		if (collider)
+		{
+			ImGui::Separator();
+			ImGui::Text("Box Collider:");
+			ImGui::DragFloat3("Col Size", &collider->size.x, 0.1f);
+			ImGui::DragFloat3("Col Offset", &collider->offset.x, 0.1f);
+		}
+	}
+
+	ImGui::End();
 }
 
 /// <summary>
@@ -83,7 +170,7 @@ void test::TestHorrorMaze::BeginScene()
 		m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 
 		// 更新摄像机的投影矩阵宽高比，防止画面被拉伸
-		m_Camera.SetAspectRatio(m_ViewportSize.x / m_ViewportSize.y);
+		m_Camera->SetAspectRatio(m_ViewportSize.x / m_ViewportSize.y);
 	}
 	m_Framebuffer->Bind();
 	GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
@@ -100,4 +187,47 @@ void test::TestHorrorMaze::BeginScene()
 void test::TestHorrorMaze::EndScene()
 {
 	m_Framebuffer->UnBind();
+}
+
+void test::TestHorrorMaze::GenerateMaze()
+{
+	enum class Tile { Empty, Straight, Corner };
+
+	struct MapData { Tile type; float rot; };
+
+	MapData map[3][3] = {
+		{ {Tile::Corner,   90.0f}, {Tile::Straight,  90.0f}, {Tile::Corner,  180.0f} },
+
+		{ {Tile::Straight,  0.0f}, {Tile::Empty,      0.0f}, {Tile::Straight,  0.0f} },
+
+		{ {Tile::Corner,    0.0f}, {Tile::Straight,  90.0f}, {Tile::Corner,  -90.0f} }
+	};
+
+	const float TILE_SIZE = 4.0f;
+
+	auto straightModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx", "Serwers01_001");
+	auto cornerModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx", "Serwers01_002");
+
+	for (int x = 0; x < 3; x++)
+	{
+		for (int z = 0; z < 3; z++)
+		{
+			MapData data = map[x][z];
+			if (data.type == Tile::Empty) continue; // 空地跳过
+
+			std::shared_ptr<GameObject> tileGo = nullptr;
+			std::string tileName = "Tile_" + std::to_string(x) + "_" + std::to_string(z);
+			if (data.type == Tile::Straight) {
+				tileGo = MazePrefabFactory::CreateStraight(tileName, straightModel, m_GameObjects);
+			}
+			else if (data.type == Tile::Corner) {
+				tileGo = MazePrefabFactory::CreateCorner(tileName, cornerModel, m_GameObjects);
+			}
+			if (tileGo)
+			{
+				tileGo->transform->localPosition = glm::vec3(x * TILE_SIZE, 0.0f, z * -TILE_SIZE);
+				tileGo->transform->localEulerAngles = glm::vec3(0.0f, data.rot, 0.0f);
+			}
+		}
+	}
 }

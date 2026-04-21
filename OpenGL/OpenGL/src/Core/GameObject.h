@@ -45,6 +45,8 @@ public:
 	void Update(float deltaTime);
 	void Draw(Shader& shader);
 
+	std::string GetName() const;
+
 private:
 	std::vector<std::shared_ptr<Component>> components;
 };

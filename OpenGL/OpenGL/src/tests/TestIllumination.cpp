@@ -6,6 +6,7 @@
 #include "MyTime.h"
 #include "Window/MyWindow.h"
 
+
 namespace test
 {
 	TestIllumination::TestIllumination()
@@ -113,7 +114,7 @@ namespace test
 			(
 				glm::vec3(0.0f), 
 				glm::vec3(1.0f, 0.045f, 0.0075f),
-				glm::vec3(0.0f, 0.0f, 1.0f),
+				glm::vec3(0.0f, 0.0f, -1.0f),
 				glm::vec3(1.0f),
 				12.5f, 
 				25.0f, 
@@ -155,7 +156,7 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 
 		m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
 
-		m_MyModel = std::make_unique<Model>("src/res/models/Characters_psx/Models/Killers/Character_Killer.fbx");
+		m_MyModel = std::make_unique<Model>("src/res/models/Characters.fbx");
 	}
 
 	TestIllumination::~TestIllumination() {}
@@ -215,7 +216,6 @@ glm::vec3(-1.3f,  1.0f, -1.5f)
 		model = glm::scale(model, m_Scare);
 		m_LightingShader->SetUniformMat4f("u_Model", model);
 
-		// 见证奇迹的时刻：一句话画出几万个顶点的复杂模型！
 		m_MyModel->Draw(*m_LightingShader);
 
 		m_LightCubeShader->Bind();

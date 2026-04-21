@@ -136,6 +136,7 @@
     <ClCompile Include="src\Base\ufbx.c" />
     <ClCompile Include="src\Camera\Camera.cpp" />
     <ClCompile Include="src\Camera\CameraController.cpp" />
+    <ClCompile Include="src\Core\BoxCollider.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
     <ClCompile Include="src\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Core\Transform.cpp" />
@@ -150,6 +151,9 @@
     <ClCompile Include="src\Light\SpotLight.cpp" />
     <ClCompile Include="src\Model\Mesh.cpp" />
     <ClCompile Include="src\Model\Model.cpp" />
+    <ClCompile Include="src\tests\Demo\FirstPersonController.cpp" />
+    <ClCompile Include="src\tests\Demo\Flashlight.cpp" />
+    <ClCompile Include="src\tests\Demo\MazePrefabFactory.h" />
     <ClCompile Include="src\tests\TestClearColor.cpp" />
     <ClCompile Include="src\tests\TestHorrorMaze.cpp" />
     <ClCompile Include="src\tests\TestIllumination.cpp" />
@@ -325,6 +329,7 @@
     <ClInclude Include="src\Base\ufbx.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\CameraController.h" />
+    <ClInclude Include="src\Core\BoxCollider.h" />
     <ClInclude Include="src\Core\Component.h" />
     <ClInclude Include="src\Core\GameObject.h" />
     <ClInclude Include="src\Core\MeshRenderer.h" />
@@ -345,6 +350,8 @@
     <ClInclude Include="src\Material\LightAndMaterial.h" />
     <ClInclude Include="src\Model\Mesh.h" />
     <ClInclude Include="src\Model\Model.h" />
+    <ClInclude Include="src\tests\Demo\FirstPersonController.h" />
+    <ClInclude Include="src\tests\Demo\Flashlight.h" />
     <ClInclude Include="src\tests\Test.h" />
     <ClInclude Include="src\tests\TestClearColor.h" />
     <ClInclude Include="src\tests\TestHorrorMaze.h" />

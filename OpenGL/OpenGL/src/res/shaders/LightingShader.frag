@@ -142,19 +142,19 @@ void main()
     vec3 norm =normalize(Normal);
 
     vec3 viewDir=normalize(u_ViewPos-FragPos);
-    vec3 globalAmbient = vec3(texture(u_Material.diffuse, TexCoords)) * 0.08;
+    vec3 globalAmbient = vec3(texture(u_Material.diffuse, TexCoords)) * 0.2;
     vec3 result = vec3(0.0);
 
     result+=globalAmbient;
-    result += CalcDirLight(u_DirLight, norm, viewDir);
+    /*result += CalcDirLight(u_DirLight, norm, viewDir);
 
     for(int i = 0; i < NR_POINT_LIGHTS; i++)
     {
         result += CalcPointLight(u_PointLight, norm, FragPos, viewDir);
-    }
+    }*/
 
     result+=CalcSpotLight(u_SpotLight,norm,FragPos,viewDir);
 
-    result+=vec3(texture(u_Material.emission,TexCoords)); 
+    //result+=vec3(texture(u_Material.emission,TexCoords)); 
     FragColor=vec4(result,1.0);
 }
