@@ -1,11 +1,11 @@
 #pragma once
 #include "tests/Test.h"
 #include <vector>
+#include <memory>
 #include "Base/VertexArray.h"
 #include "Base/VertexBuffer.h"
 #include "Base/IndexBuffer.h"
 #include "Base/Shader.h"
-#include <memory>
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -18,16 +18,16 @@
 #include "Light/DirLight.h"
 #include "Light/PointLight.h"
 #include "Light/SpotLight.h"
-#include "UI/BaseNode.h"
+
+#include "Core/GameObject.h"
+#include "Core/MeshRenderer.h"
 #include "UI/SceneHierarchyPanel.h"
-#include "Light//UI/PointLightNode.h"
-#include "Light/UI/DirLightNode.h"
-#include "Light/UI/SpotLight.h"
-
 #include "Base/Framebuffer.h"
-
-#include "Model/Mesh.h"
 #include "Model/Model.h"
+
+#include "Base/VertexArray.h"
+#include "Base/VertexBuffer.h"
+#include "Base/IndexBuffer.h"
 
 namespace test
 {
@@ -43,48 +43,37 @@ namespace test
 		void EndScene();
 
 	private:
-		std::unique_ptr<VertexArray> m_Vao;
-		std::unique_ptr<VertexBuffer> m_Vbo;
-		std::unique_ptr<IndexBuffer> m_Ibo;
+		std::unique_ptr<Shader> m_LightingShader;
+		std::unique_ptr<Shader> m_LightCubeShader;
 
-		std::unique_ptr<Shader> m_LightingShader; // 负责计算受光物体的明暗
-		std::unique_ptr<Shader> m_LightCubeShader; // 负责把光源画成一个纯白/纯色的小方块
-
-		glm::vec3 m_Translation;
-		glm::vec3 m_Scare;
-
+		float m_ClearColor[4];
 		glm::vec3 m_LightPos;
 
 		GLVideoRecorder m_Recorder;
-		bool m_ShowFFmpegTool = false;
-		float m_ClearColor[4];
-
 		Camera m_Camera;
 		float cameraSpeed;
-
-		std::unique_ptr<VertexArray> m_LightVao;
-
 		Material m_Material;
 
 		std::unique_ptr<Texture> m_DiffuseMap;
 		std::unique_ptr<Texture> m_SpecularMap;
 		std::unique_ptr<Texture> m_EmissionMap;
-		std::vector<glm::vec3> cubePositions;
-
 
 		CameraController m_CameraController;
 
-		std::unique_ptr<DirLight> m_SunLight;
-		std::unique_ptr<PointLight> m_PointLight;
-		std::unique_ptr<SpotLight> m_SpotLight;
+		std::shared_ptr<DirLight> m_SunLight;
+		std::shared_ptr<PointLight> m_PointLight;
+		std::shared_ptr<SpotLight> m_SpotLight;
 
-		std::unique_ptr<BaseNode> m_RootNode;
+		std::vector<std::shared_ptr<GameObject>> m_GameObjects;
 		std::unique_ptr<SceneHierarchyPanel> m_HierarchyPanel;
 
-		//帧缓冲区
 		std::unique_ptr<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 
-		std::unique_ptr<Model> m_MyModel;
+		std::shared_ptr<Model> m_SharedModel;
+
+		std::unique_ptr<VertexArray> m_BoxVAO;
+		std::unique_ptr<VertexBuffer> m_BoxVBO;
+		std::unique_ptr<IndexBuffer> m_BoxIBO;
 	};
 }

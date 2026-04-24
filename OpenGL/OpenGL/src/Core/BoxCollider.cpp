@@ -1,4 +1,12 @@
 #include "BoxCollider.h"
+#include <imgui/imgui.h>
+
+void BoxCollider::OnInspectorGUI()
+{
+    ImGui::Text("Box Collider");
+    ImGui::DragFloat3("Size", &size.x, 0.1f);
+    ImGui::DragFloat3("Offset", &offset.x, 0.1f);
+}
 
 bool BoxCollider::IsOverlapping(BoxCollider* other) const
 {

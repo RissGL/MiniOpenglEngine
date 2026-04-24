@@ -12,6 +12,8 @@ public:
 	bool activeSelf = true; 
 
 	Transform* transform = nullptr;
+	const std::vector<std::shared_ptr<Component>>& GetComponents() const { return components; }
+
 
 	GameObject(const std::string& name = "GameObject");
 

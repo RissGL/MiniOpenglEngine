@@ -1,16 +1,20 @@
 #pragma once
-#include "UI/BaseNode.h"
+#include "Core/GameObject.h"
+#include <vector>
+#include <memory>
 
 class SceneHierarchyPanel
 {
 public:
-	SceneHierarchyPanel(BaseNode* rootNode) : m_ContextNode(rootNode) {}
+	SceneHierarchyPanel() = default;
+
+	void SetContext(std::vector<std::shared_ptr<GameObject>>* gameObjects);
 
 	void OnImGuiRender();
 
 private:
-	BaseNode* m_ContextNode;
-	BaseNode* m_SelectionContext=nullptr;//当前选中节点
+	std::vector<std::shared_ptr<GameObject>>* m_ContextObjects = nullptr;
+	GameObject* m_SelectionContext = nullptr; // 当前选中的物体
 
-	void DrawNodeTree(BaseNode* node);
+	void DrawEntityNode(GameObject* entity);
 };

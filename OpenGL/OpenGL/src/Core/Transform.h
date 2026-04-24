@@ -22,7 +22,9 @@ public:
 
 	glm::vec3 GetWorldPosition() const;
 
+	std::vector<Transform*> GetChildren()const;
 	void RemoveChild(Transform* child);
+	void OnInspectorGUI() override;
 private:
 
 };

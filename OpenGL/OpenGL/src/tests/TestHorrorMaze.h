@@ -9,6 +9,7 @@
 #include "Base/Framebuffer.h"
 #include "Light/SpotLight.h"
 #include "Demo/FirstPersonController.h"
+#include "UI/SceneHierarchyPanel.h"
 
 namespace test
 {
@@ -42,5 +43,6 @@ namespace test
 		//Ö¡»º³åÇø
 		std::unique_ptr<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
+		SceneHierarchyPanel m_HierarchyPanel;
 	};
 }

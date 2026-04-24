@@ -138,6 +138,8 @@
     <ClCompile Include="src\Camera\CameraController.cpp" />
     <ClCompile Include="src\Core\BoxCollider.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
+    <ClCompile Include="src\Core\LightComponents.cpp" />
+    <ClCompile Include="src\Core\LightComponents.h" />
     <ClCompile Include="src\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Core\Transform.cpp" />
     <ClCompile Include="src\Debug\Debugcpp.cpp" />

@@ -1,6 +1,7 @@
 #include "GameObject.h"
 
 GameObject::GameObject(const std::string& name)
+	:name(name)
 {
 	auto t = std::make_shared<Transform>();
 	t->gameObject = this;

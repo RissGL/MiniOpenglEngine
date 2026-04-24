@@ -54,6 +54,7 @@ test::TestHorrorMaze::TestHorrorMaze()
 	flashlight->AddComponent<Flashlight>(m_SpotLight, *m_LightingShader,"u_SpotLight");
 	flashlight->AddComponent<MeshRenderer>(m_FlashlightModel);
 	m_GameObjects.push_back(flashlight);
+	m_HierarchyPanel.SetContext(&m_GameObjects);
 
 	//唤醒所有物体
 	for (auto& go : m_GameObjects) {
@@ -109,53 +110,7 @@ void test::TestHorrorMaze::OnImGuiRender()
 
 	ImGui::End();
 
-	ImGui::Begin("Scene Inspector");
-
-	static int selectedObjIndex = -1; // 记录当前选中的物体
-
-	// 1. 制作一个下拉菜单，列出所有的 GameObject
-	std::string previewValue = (selectedObjIndex >= 0 && selectedObjIndex < m_GameObjects.size())
-		? m_GameObjects[selectedObjIndex]->GetName()
-		: "Select an Object...";
-
-	if (ImGui::BeginCombo("Objects", previewValue.c_str()))
-	{
-		for (int i = 0; i < m_GameObjects.size(); i++)
-		{
-			bool isSelected = (selectedObjIndex == i);
-			if (ImGui::Selectable(m_GameObjects[i]->GetName().c_str(), isSelected)) {
-				selectedObjIndex = i;
-			}
-			if (isSelected) ImGui::SetItemDefaultFocus();
-		}
-		ImGui::EndCombo();
-	}
-
-	ImGui::Separator();
-
-	if (selectedObjIndex >= 0 && selectedObjIndex < m_GameObjects.size())
-	{
-		auto obj = m_GameObjects[selectedObjIndex];
-
-		ImGui::Text("Transform:");
-
-		ImGui::DragFloat3("Position", &obj->transform->localPosition.x, 0.1f);
-
-		ImGui::DragFloat3("Rotation", &obj->transform->localEulerAngles.x, 1.0f);
-
-		ImGui::DragFloat3("Scale", &obj->transform->localScale.x, 0.01f);
-
-		auto collider = obj->GetComponent<BoxCollider>();
-		if (collider)
-		{
-			ImGui::Separator();
-			ImGui::Text("Box Collider:");
-			ImGui::DragFloat3("Col Size", &collider->size.x, 0.1f);
-			ImGui::DragFloat3("Col Offset", &collider->offset.x, 0.1f);
-		}
-	}
-
-	ImGui::End();
+	m_HierarchyPanel.OnImGuiRender();
 }
 
 /// <summary>
@@ -203,10 +158,10 @@ void test::TestHorrorMaze::GenerateMaze()
 		{ {Tile::Corner,    0.0f}, {Tile::Straight,  90.0f}, {Tile::Corner,  -90.0f} }
 	};
 
-	const float TILE_SIZE = 4.0f;
+	const float TILE_SIZE = 12.0f;
 
-	auto straightModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx", "Serwers01_001");
-	auto cornerModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx", "Serwers01_002");
+	auto straightModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx", "Serwers01_005");
+	auto cornerModel = std::make_shared<Model>("src/res/models/Sewer/Models/Sewers.fbx", "Serwers01_003");
 
 	for (int x = 0; x < 3; x++)
 	{

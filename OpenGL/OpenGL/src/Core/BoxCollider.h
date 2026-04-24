@@ -17,6 +17,7 @@ public:
     BoxCollider(glm::vec3 size = glm::vec3(1.0f), glm::vec3 offset = glm::vec3(0.0f))
         : size(size), offset(offset) {
     }
+    void OnInspectorGUI() override;
 
     void Start() override
     {

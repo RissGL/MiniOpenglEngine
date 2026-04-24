@@ -1,4 +1,13 @@
 #include "Transform.h"
+#include <imgui/imgui.h>
+
+void Transform::OnInspectorGUI()
+{
+	ImGui::Text("Transform");
+	ImGui::DragFloat3("Position", &localPosition.x, 0.1f);
+	ImGui::DragFloat3("Rotation", &localEulerAngles.x, 1.0f);
+	ImGui::DragFloat3("Scale", &localScale.x, 0.01f);
+}
 
 void Transform::SetParent(Transform* newParent)
 {
@@ -34,6 +43,11 @@ glm::mat4 Transform::GetModelMatrix() const
 glm::vec3 Transform::GetWorldPosition() const
 {
 	return glm::vec3(GetModelMatrix()[3]); // 从矩阵的第四列提取位置
+}
+
+std::vector<Transform*> Transform::GetChildren() const
+{
+	return children;
 }
 
 void Transform::RemoveChild(Transform* child)
