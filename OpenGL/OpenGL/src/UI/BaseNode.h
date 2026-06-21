@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include "glm/glm.hpp"
@@ -22,7 +22,7 @@ public:
 
 	virtual void OnImGuiRenderAttributes()
 	{
-		// Ä¬ÈÏµÄ»ù´¡ÊôÐÔ
+		// é»˜è®¤çš„åŸºç¡€å±žæ€§
 		ImGui::DragFloat3("Position", &position.x, 0.1f);
 	}
 };

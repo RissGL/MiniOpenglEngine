@@ -1,4 +1,4 @@
-#include "Framebuffer.h"
+ï»¿#include "Framebuffer.h"
 #include "Debug/Debug.h"
 
 Framebuffer::Framebuffer(unsigned int width, unsigned int height)
@@ -16,7 +16,7 @@ Framebuffer::~Framebuffer()
 
 void Framebuffer::Invalidate()
 {
-    // Èç¹ûÒÑ¾­´æÔÚ£¬ÏÈÉ¾µô¾ÉµÄ£¨ÔÚ Resize Ê±»áÓÃµ½£©
+    // å¦‚æœå·²ç»å­˜åœ¨ï¼Œå…ˆåˆ æ‰æ—§çš„ï¼ˆåœ¨ Resize æ—¶ä¼šç”¨åˆ°ï¼‰
     if (m_RendererID)
     {
         GLCALL(glDeleteFramebuffers(1, &m_RendererID));
@@ -32,7 +32,7 @@ void Framebuffer::Invalidate()
     GLCALL(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr));
     GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
     GLCALL(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-    // ½«ÎÆÀí¹ÒÔØµ½ FBO µÄÑÕÉ«²Û 0 ÉÏ
+    // å°†çº¹ç†æŒ‚è½½åˆ° FBO çš„é¢œè‰²æ§½ 0 ä¸Š
     GLCALL(glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorAttachment, 0));
 
 
@@ -41,10 +41,10 @@ void Framebuffer::Invalidate()
     GLCALL(glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, m_Width, m_Height));
     GLCALL(glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, m_DepthAttachment));
 
-    // ¼ì²é FBO ÊÇ·ñÍêÕûÎŞÈ±
+    // æ£€æŸ¥ FBO æ˜¯å¦å®Œæ•´æ— ç¼º
     ASSERT(glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE);
 
-    // ½â°ó£¬»Ö¸´Ô­×´
+    // è§£ç»‘ï¼Œæ¢å¤åŸçŠ¶
     GLCALL(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 }
 
@@ -66,7 +66,7 @@ void Framebuffer::Resize(unsigned int width, unsigned int height)
 
     m_Width = width;
     m_Height = height;
-    Invalidate(); // ÖØĞÂÉú³É FBO
+    Invalidate(); // é‡æ–°ç”Ÿæˆ FBO
 }
 
 int Framebuffer::ReadPixel(int x, int y) const
@@ -75,7 +75,7 @@ int Framebuffer::ReadPixel(int x, int y) const
     GLCALL(glReadBuffer(GL_COLOR_ATTACHMENT0));
 
     unsigned char pixelData[4]; // RGBA
-    // ¶ÁÈ¡Ö¸¶¨×ø±êµÄ 1x1 ÏñËØÇø¿é
+    // è¯»å–æŒ‡å®šåæ ‡çš„ 1x1 åƒç´ åŒºå—
     GLCALL(glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelData));
 
     return (int)pixelData[0];

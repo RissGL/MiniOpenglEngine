@@ -36,7 +36,7 @@ struct DirLight {
 struct PointLight {
     vec3 position;
 
-    vec3 attenuation;//Ë¥¼õ£¬ÀïÃæ·Ö±ðÊÇ³£ÊýÏî£¬Ò»´ÎÏî£¬¶þ´ÎÏî
+    vec3 attenuation;//Ë¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Ç³ï¿½ï¿½ï¿½ï¿½î£¬Ò»ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     vec3 ambient;
     vec3 diffuse;
@@ -49,7 +49,7 @@ struct SpotLight {
     float cutOff;
     float outerCutOff;
 
-    vec3 attenuation;//Ë¥¼õ£¬ÀïÃæ·Ö±ðÊÇ³£ÊýÏî£¬Ò»´ÎÏî£¬¶þ´ÎÏî
+    vec3 attenuation;//Ë¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½Ç³ï¿½ï¿½ï¿½ï¿½î£¬Ò»ï¿½ï¿½ï¿½î£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     vec3 ambient;
     vec3 diffuse;
@@ -61,20 +61,21 @@ struct SpotLight {
 uniform Material u_Material;
 
 uniform DirLight u_DirLight;
-uniform PointLight u_PointLight;
+uniform PointLight u_PointLights[NR_POINT_LIGHTS];
+uniform int u_NumPointLights;
 uniform SpotLight u_SpotLight;
 
 uniform Light u_Light;
 
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
 {
-    //Âþ·´Éä
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 norm =normalize(normal);
     vec3 lightDir=normalize(-light.direction);
     float diff=max(dot(norm,lightDir),0.0);
     vec3 diffuse =(diff*vec3(texture(u_Material.diffuse,TexCoords)))*light.diffuse;
 
-    //¾µÃæ¹â
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 reflectDir=reflect(-lightDir,norm);
     float spec=0.0;
     if(diff>0)
@@ -91,13 +92,13 @@ vec3 CalcPointLight(PointLight light, vec3 normal,vec3 fragPos, vec3 viewDir)
     float distance=length(light.position-fragPos);
     float attenuation=1.0/(light.attenuation.x+light.attenuation.y*distance+light.attenuation.z*distance*distance);
 
-    //Âþ·´Éä
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 norm =normalize(normal);
     vec3 lightDir=normalize(light.position - fragPos);
     float diff=max(dot(norm,lightDir),0.0);
     vec3 diffuse =(diff*vec3(texture(u_Material.diffuse,TexCoords)))*light.diffuse;
 
-    //¾µÃæ¹â
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 reflectDir=reflect(-lightDir,norm);
     float spec=0.0;
     if(diff>0)
@@ -120,12 +121,12 @@ vec3 CalcSpotLight(SpotLight light, vec3 normal,vec3 fragPos, vec3 viewDir)
     float distance=length(light.position-fragPos);
     float attenuation=1.0/(light.attenuation.x+light.attenuation.y*distance+light.attenuation.z*distance*distance);
 
-    //Âþ·´Éä
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 norm =normalize(Normal);
     float diff=max(dot(norm,lightDir),0.0);
     vec3 diffuse =(diff*vec3(texture(u_Material.diffuse,TexCoords)))*light.diffuse;
 
-    //¾µÃæ¹â
+    //ï¿½ï¿½ï¿½ï¿½ï¿½
     vec3 reflectDir=reflect(-lightDir,norm);
     float spec=0.0;
     if(diff>0)
@@ -148,9 +149,9 @@ void main()
     result+=globalAmbient;
     result += CalcDirLight(u_DirLight, norm, viewDir);
 
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < u_NumPointLights && i < NR_POINT_LIGHTS; i++)
     {
-        result += CalcPointLight(u_PointLight, norm, FragPos, viewDir);
+        result += CalcPointLight(u_PointLights[i], norm, FragPos, viewDir);
     }
 
     result+=CalcSpotLight(u_SpotLight,norm,FragPos,viewDir);

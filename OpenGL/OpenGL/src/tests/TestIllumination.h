@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tests/Test.h"
 #include <vector>
 #include <memory>
@@ -21,8 +21,10 @@
 
 #include "Core/GameObject.h"
 #include "Core/MeshRenderer.h"
+#include "Core/Scene.h"
 #include "UI/SceneHierarchyPanel.h"
 #include "Base/Framebuffer.h"
+#include "Base/Skybox.h"
 #include "Model/Model.h"
 
 #include "Base/VertexArray.h"
@@ -54,17 +56,17 @@ namespace test
 		float cameraSpeed;
 		Material m_Material;
 
-		std::unique_ptr<Texture> m_DiffuseMap;
-		std::unique_ptr<Texture> m_SpecularMap;
-		std::unique_ptr<Texture> m_EmissionMap;
+		std::shared_ptr<Texture> m_DiffuseMap;
+		std::shared_ptr<Texture> m_SpecularMap;
+		std::shared_ptr<Texture> m_EmissionMap;
 
 		CameraController m_CameraController;
 
 		std::shared_ptr<DirLight> m_SunLight;
-		std::shared_ptr<PointLight> m_PointLight;
+		std::vector<std::shared_ptr<PointLight>> m_PointLights;
 		std::shared_ptr<SpotLight> m_SpotLight;
 
-		std::vector<std::shared_ptr<GameObject>> m_GameObjects;
+		Scene m_Scene;
 		std::unique_ptr<SceneHierarchyPanel> m_HierarchyPanel;
 
 		std::unique_ptr<Framebuffer> m_Framebuffer;
@@ -72,8 +74,15 @@ namespace test
 
 		std::shared_ptr<Model> m_SharedModel;
 
+	std::unique_ptr<Skybox> m_Skybox;
+
 		std::unique_ptr<VertexArray> m_BoxVAO;
 		std::unique_ptr<VertexBuffer> m_BoxVBO;
 		std::unique_ptr<IndexBuffer> m_BoxIBO;
+
+	std::unique_ptr<VertexArray> m_SphereVAO;
+	std::unique_ptr<VertexBuffer> m_SphereVBO;
+	std::unique_ptr<IndexBuffer> m_SphereIBO;
+	unsigned int m_SphereIndexCount = 0;
 	};
 }

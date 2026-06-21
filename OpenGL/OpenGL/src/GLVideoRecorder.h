@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include <stdio.h>
@@ -19,19 +19,19 @@ private:
     void StopRecording();
 
 private:
-    FILE* m_FFmpegPipe;      // Ö¸Ïò FFmpeg ½ø³ÌµÄ¹ÜµÀÁ÷
+    FILE* m_FFmpegPipe;      // æŒ‡å‘ FFmpeg è¿›ç¨‹çš„ç®¡é“æµ
     bool m_IsRecording;
-    int m_FrameCount;        // µ±Ç°Â¼ÖÆµÄÖ¡Êı
-    int m_TargetFrames;      // Ä¿±êĞèÒªÂ¼ÖÆµÄ×ÜÖ¡Êı
+    int m_FrameCount;        // å½“å‰å½•åˆ¶çš„å¸§æ•°
+    int m_TargetFrames;      // ç›®æ ‡éœ€è¦å½•åˆ¶çš„æ€»å¸§æ•°
 
-    std::vector<unsigned char> m_PixelBuffer; // ÏñËØ»º³åÇø
+    std::vector<unsigned char> m_PixelBuffer; // åƒç´ ç¼“å†²åŒº
 
-    // Â¼ÖÆ²ÎÊı
+    // å½•åˆ¶å‚æ•°
     char m_FFmpegPath[256];
     char m_OutputVideo[256];
     char m_InputAudio[256];
 
     bool m_EnableAudio;
     int m_DurationSeconds;
-    int m_FPS;               // Â¼ÖÆÖ¡ÂÊ
+    int m_FPS;               // å½•åˆ¶å¸§ç‡
 };

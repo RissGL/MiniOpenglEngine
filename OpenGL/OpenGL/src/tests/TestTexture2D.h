@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "tests/Test.h"
 #include <vector>
 #include "Base/VertexArray.h"

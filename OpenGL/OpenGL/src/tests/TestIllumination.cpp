@@ -1,4 +1,4 @@
-#include "tests/TestIllumination.h"
+Ôªø#include "tests/TestIllumination.h"
 #include "Base/VertexBufferLayout.h"
 #include "imgui/imgui.h"
 #include "GLFW/glfw3.h"
@@ -21,41 +21,41 @@ namespace test
 		m_LightCubeShader = std::make_unique<Shader>("src/res/shaders/LightCube.vert",
 			"src/res/shaders/LightCube.frag");
 
-		m_DiffuseMap = std::make_unique<Texture>("src/res/texture/container2.png");
-		m_SpecularMap = std::make_unique<Texture>("src/res/texture/container2_specular.png");
-		//m_EmissionMap = std::make_unique<Texture>("src/res/texture/matrix.jpg");
+		m_DiffuseMap = std::make_shared<Texture>("src/res/texture/container2.png");
+		m_SpecularMap = std::make_shared<Texture>("src/res/texture/container2_specular.png");
 
-#pragma region π‚’’…Í√˜
-		m_Material = { m_DiffuseMap.get(), m_SpecularMap.get(), m_EmissionMap.get(), 32.0f };
+#pragma region ÂÖâÁÖß
+		m_Material = { m_DiffuseMap, m_SpecularMap, m_EmissionMap, 32.0f };
 
-		m_SunLight = std::make_shared<DirLight>
-			(glm::vec3(-0.2f, -1.0f, -0.3f), glm::vec3(0.1f, 0.1f, 0.2f), 1.0f);
+		m_SunLight = std::make_shared<DirLight>(
+			glm::vec3(-0.2f, -1.0f, -0.3f), glm::vec3(0.1f, 0.1f, 0.2f), 1.0f);
 
-		m_PointLight = std::make_shared<PointLight>
-			(m_LightPos, glm::vec3(1.0f, 0.0014f, 0.000007f), glm::vec3(1.0f, 1.0f, 1.0f), 0.5f);
+		m_PointLights.push_back(std::make_shared<PointLight>(
+			m_LightPos, glm::vec3(1.0f, 0.0014f, 0.000007f), glm::vec3(1.0f, 0.8f, 0.6f), 1.2f));
+		m_PointLights.push_back(std::make_shared<PointLight>(
+			glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(1.0f, 0.045f, 0.0075f), glm::vec3(0.2f, 0.5f, 1.0f), 0.8f));
 
-		m_SpotLight = std::make_shared<SpotLight>
-			(glm::vec3(0.0f), glm::vec3(1.0f, 0.0014f, 0.000007f), glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f), 12.5f, 25.0f, 1.0f);
+		m_SpotLight = std::make_shared<SpotLight>(
+			glm::vec3(0.0f), glm::vec3(1.0f, 0.0014f, 0.000007f), glm::vec3(0.0f, -1.0f, 0.0f),
+			glm::vec3(1.0f), 12.5f, 25.0f, 1.0f);
 
-		auto pointLightObj = std::make_shared<GameObject>("Point Light");
-		pointLightObj->transform->localPosition = m_LightPos; 
-		pointLightObj->AddComponent<PointLightComponent>(m_PointLight); 
-		m_GameObjects.push_back(pointLightObj);
+		auto pl0 = m_Scene.AddGameObject("Point Light 0");
+		pl0->transform->localPosition = m_LightPos;
+		pl0->AddComponent<PointLightComponent>(m_PointLights[0]);
 
-		auto sunObj = std::make_shared<GameObject>("Directional Light");
+		auto pl1 = m_Scene.AddGameObject("Point Light 1");
+		pl1->transform->localPosition = glm::vec3(2.0f, 2.0f, 0.0f);
+		pl1->AddComponent<PointLightComponent>(m_PointLights[1]);
+
+		auto sunObj = m_Scene.AddGameObject("Directional Light");
 		sunObj->transform->localEulerAngles = glm::vec3(-45.0f, -30.0f, 0.0f);
 		sunObj->AddComponent<DirLightComponent>(m_SunLight);
-		m_GameObjects.push_back(sunObj);
 
-
-		auto spotObj = std::make_shared<GameObject>("SpotLight");
-		//spotObj->transform->localEulerAngles = glm::vec3(0.0f);
+		auto spotObj = m_Scene.AddGameObject("SpotLight");
 		spotObj->AddComponent<SpotLightComponent>(m_SpotLight);
-		m_GameObjects.push_back(spotObj);
 #pragma endregion
 
-
-#pragma region µÿ∞Â
+#pragma region Âú∞Êùø
 		float half = 5.0f;
 		struct Vertex {
 			glm::vec3 pos;
@@ -63,11 +63,9 @@ namespace test
 			glm::vec2 texCoord;
 		};
 		Vertex floorVertices[] = {
-			// »˝Ω«–Œ1
 			{{-half, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
 			{{ half, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},
 			{{ half, 0.0f,  half}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
-			// »˝Ω«–Œ2
 			{{-half, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
 			{{ half, 0.0f,  half}, {0.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
 			{{-half, 0.0f,  half}, {0.0f, 1.0f, 0.0f}, {0.0f, 1.0f}}
@@ -77,47 +75,87 @@ namespace test
 		m_BoxVBO = std::make_unique<VertexBuffer>(floorVertices, sizeof(floorVertices));
 
 		VertexBufferLayout layout;
-		layout.Push<float>(3); // pos
-		layout.Push<float>(3); // normal
-		layout.Push<float>(2); // texCoords
+		layout.Push<float>(3);
+		layout.Push<float>(3);
+		layout.Push<float>(2);
 		m_BoxVAO->AddBuffer(*m_BoxVBO, layout);
+#pragma endregion
+
+#pragma region ÂÖâÊ∫êÂ∞èÁêÉ
+	{
+		const int latSegs = 12, lonSegs = 16;
+		std::vector<float> sphereVerts;
+		std::vector<unsigned int> sphereIndices;
+
+		for (int lat = 0; lat <= latSegs; lat++) {
+			float theta = lat * glm::pi<float>() / latSegs;
+			float sinT = sin(theta), cosT = cos(theta);
+			for (int lon = 0; lon <= lonSegs; lon++) {
+				float phi = lon * 2.0f * glm::pi<float>() / lonSegs;
+				float sinP = sin(phi), cosP = cos(phi);
+				sphereVerts.push_back(sinT * cosP);
+				sphereVerts.push_back(cosT);
+				sphereVerts.push_back(sinT * sinP);
+			}
+		}
+		for (int lat = 0; lat < latSegs; lat++) {
+			for (int lon = 0; lon < lonSegs; lon++) {
+				unsigned int a = lat * (lonSegs + 1) + lon;
+				unsigned int b = a + lonSegs + 1;
+				sphereIndices.push_back(a);
+				sphereIndices.push_back(b);
+				sphereIndices.push_back(a + 1);
+				sphereIndices.push_back(a + 1);
+				sphereIndices.push_back(b);
+				sphereIndices.push_back(b + 1);
+			}
+		}
+		m_SphereIndexCount = sphereIndices.size();
+
+		m_SphereVAO = std::make_unique<VertexArray>();
+		m_SphereVBO = std::make_unique<VertexBuffer>(sphereVerts.data(), sphereVerts.size() * sizeof(float));
+		m_SphereIBO = std::make_unique<IndexBuffer>(sphereIndices.data(), sphereIndices.size());
+
+		VertexBufferLayout sphereLayout;
+		sphereLayout.Push<float>(3);
+		m_SphereVAO->AddBuffer(*m_SphereVBO, sphereLayout);
+	}
 #pragma endregion
 
 		m_SharedModel = std::make_shared<Model>("src/res/models/Characters.fbx", "Character_Dummy_Male_01");
 
-
-		auto obj1 = std::make_shared<GameObject>("Demonstrator 1");
+		auto obj1 = m_Scene.AddGameObject("Demonstrator 1");
 		obj1->transform->localPosition = glm::vec3(0.0f, 0.0f, 0.0f);
 		obj1->transform->localScale = glm::vec3(1.0f);
 		obj1->AddComponent<MeshRenderer>(m_SharedModel);
-		m_GameObjects.push_back(obj1);
 
-		auto obj2 = std::make_shared<GameObject>("Demonstrator 2");
+		auto obj2 = m_Scene.AddGameObject("Demonstrator 2");
 		obj2->transform->localPosition = glm::vec3(2.0f, 0.0f, 0.0f);
 		obj2->transform->localScale = glm::vec3(1.0f);
 		obj2->AddComponent<MeshRenderer>(m_SharedModel);
-		m_GameObjects.push_back(obj2);
 
-		for (auto& go : m_GameObjects) { go->Awake(); go->Start(); }
+		m_Scene.Awake();
+		m_Scene.Start();
 
 		m_HierarchyPanel = std::make_unique<SceneHierarchyPanel>();
-		m_HierarchyPanel->SetContext(&m_GameObjects);
+		m_HierarchyPanel->SetContext(&m_Scene.GetGameObjects());
 
 		m_Framebuffer = std::make_unique<Framebuffer>(MyWindow::GetWidth(), MyWindow::GetHeight());
+
+		m_Skybox = std::make_unique<Skybox>();
 	}
 
 	TestIllumination::~TestIllumination() {}
 
 	void TestIllumination::OnUpdate(float deltaTime)
 	{
-		for (auto& go : m_GameObjects) { go->Update(deltaTime); }
+		m_Scene.Update(deltaTime);
 	}
 
 	void TestIllumination::OnRender()
 	{
 		BeginScene();
 		m_CameraController.OnUpdate(MyTime::GetDeltaTime());
-
 
 		m_LightingShader->Bind();
 		m_LightingShader->SetUniformMat4f("u_View", m_Camera.GetViewMatrix());
@@ -126,38 +164,43 @@ namespace test
 		m_LightingShader->SetUniformMaterial("u_Material", m_Material);
 
 		m_SunLight->BindToShader(*m_LightingShader, "u_DirLight");
-		m_PointLight->BindToShader(*m_LightingShader, "u_PointLight");
 
-		//m_SpotLight->position = m_Camera.GetCameraPos();
-		//m_SpotLight->direction = m_Camera.GetCameraFront();
+		for (size_t i = 0; i < m_PointLights.size(); i++) {
+			std::string uniformName = "u_PointLights[" + std::to_string(i) + "]";
+			m_PointLights[i]->BindToShader(*m_LightingShader, uniformName);
+		}
+		m_LightingShader->SetUniform1i("u_NumPointLights", (int)m_PointLights.size());
+
 		m_SpotLight->BindToShader(*m_LightingShader, "u_SpotLight");
 
 		if (m_Material.mapDiffuse != nullptr) m_Material.mapDiffuse->Bind(0);
 		if (m_Material.specularMap != nullptr) m_Material.specularMap->Bind(1);
 
-#pragma region µÿ∞Â
-		glm::mat4 floorModel = glm::mat4(1.0f);   // ø…“‘∏˘æ›–Ë“™∆Ω“∆
+#pragma region Âú∞Êùø
+		glm::mat4 floorModel = glm::mat4(1.0f);
 		m_LightingShader->SetUniformMat4f("u_Model", floorModel);
 		m_BoxVAO->Bind();
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 #pragma endregion
 
+		m_Scene.Draw(*m_LightingShader);
 
-		for (auto& go : m_GameObjects)
-		{
-			go->Draw(*m_LightingShader);
-		}
+		m_Skybox->Draw(m_Camera.GetViewMatrix(), m_Camera.GetProjectionMatrix());
 
-		// ª≠π‚‘¥Ã· æøÈ
+
+		// ÂÖâÊ∫êÂ∞èÁêÉÊ†áËÆ∞
 		m_LightCubeShader->Bind();
 		m_LightCubeShader->SetUniformMat4f("u_View", m_Camera.GetViewMatrix());
 		m_LightCubeShader->SetUniformMat4f("u_Projection", m_Camera.GetProjectionMatrix());
-		m_LightCubeShader->SetUniform3f("u_LightColor", m_PointLight->baseColor.x, m_PointLight->baseColor.y, m_PointLight->baseColor.z);
-		m_LightCubeShader->SetUniform1f("u_LightIntensity", m_PointLight->intensity);
-
-		glm::mat4 lightModel = glm::translate(glm::mat4(1.0f), m_PointLight->position);
-		lightModel = glm::scale(lightModel, glm::vec3(0.2f));
-		m_LightCubeShader->SetUniformMat4f("u_Model", lightModel);
+		m_SphereVAO->Bind();
+		for (auto& pl : m_PointLights) {
+			m_LightCubeShader->SetUniform3f("u_LightColor", pl->baseColor.x, pl->baseColor.y, pl->baseColor.z);
+			m_LightCubeShader->SetUniform1f("u_LightIntensity", pl->intensity);
+			glm::mat4 lightModel = glm::translate(glm::mat4(1.0f), pl->position);
+			lightModel = glm::scale(lightModel, glm::vec3(0.2f));
+			m_LightCubeShader->SetUniformMat4f("u_Model", lightModel);
+			GLCALL(glDrawElements(GL_TRIANGLES, m_SphereIndexCount, GL_UNSIGNED_INT, nullptr));
+		}
 
 		EndScene();
 		m_Recorder.CaptureFrame(MyWindow::GetWidth(), MyWindow::GetHeight());
@@ -167,7 +210,6 @@ namespace test
 	{
 		m_HierarchyPanel->OnImGuiRender();
 
-		// ◊‘  ”¶ ”ø⁄
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0, 0 });
 		ImGui::Begin("Game Viewport");
 
@@ -179,15 +221,21 @@ namespace test
 
 		ImGui::End();
 		ImGui::PopStyleVar();
+
+		ImGui::Begin("Shader Tools");
+		if (ImGui::Button("Reload Lighting Shader")) {
+			m_LightingShader->Reload();
+		}
+		ImGui::End();
 	}
 
 	void TestIllumination::BeginScene() {
-		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f && (m_Framebuffer->GetWidth() != m_ViewportSize.x || m_Framebuffer->GetHeight() != m_ViewportSize.y)) {
+		if (m_ViewportSize.x > 0.0f && m_ViewportSize.y > 0.0f &&
+			(m_Framebuffer->GetWidth() != m_ViewportSize.x || m_Framebuffer->GetHeight() != m_ViewportSize.y)) {
 			m_Framebuffer->Resize((uint32_t)m_ViewportSize.x, (uint32_t)m_ViewportSize.y);
 			m_Camera.SetAspectRatio(m_ViewportSize.x / m_ViewportSize.y);
 		}
 		m_Framebuffer->Bind();
-		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 		GLCALL(glEnable(GL_DEPTH_TEST));
 		GLCALL(glClearColor(m_ClearColor[0], m_ClearColor[1], m_ClearColor[2], m_ClearColor[3]));
 		GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));

@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+ï»¿#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
@@ -41,22 +41,22 @@ int main(void)
 {
     MyWindow appWindow(2560, 1600, "OpenGL Debugging");
 
-    // ÏÖ´ú ImGui ³õÊ¼»¯ 
+    // ç°ä»£ ImGui åˆå§‹åŒ– 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    //  ¿ªÆô Docking ºÍ ¶à´°¿ÚÄ§·¨£¡
-    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // ÔÊĞí¼üÅÌ¿ØÖÆ
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // ¿ªÆô´°¿ÚÍ£¿¿
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // ¿ªÆô¶àÊÓÍ¼ 
+    //  å¼€å¯ Docking å’Œ å¤šçª—å£é­”æ³•ï¼
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // å…è®¸é”®ç›˜æ§åˆ¶
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;     // å¼€å¯çª—å£åœé 
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;   // å¼€å¯å¤šè§†å›¾ 
 
-    //  ¼ÓÔØÖĞÎÄ×ÖÌå (Ìæ»»³ÉÄãµçÄÔÀïµÄ×ÖÌåÂ·¾¶)
+    //  åŠ è½½ä¸­æ–‡å­—ä½“ (æ›¿æ¢æˆä½ ç”µè„‘é‡Œçš„å­—ä½“è·¯å¾„)
     io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\msyh.ttc", 20.0f, NULL, io.Fonts->GetGlyphRangesChineseFull());
 
     ImGui::StyleColorsDark();
 
-    // Èç¹û¿ªÆôÁË¶à´°¿Ú£¬ÈÃ·Ç»îÔ¾´°¿ÚÉÔÎ¢Í¸Ã÷Ò»µã£¬¿´ÆğÀ´¸ü¸ß¼¶
+    // å¦‚æœå¼€å¯äº†å¤šçª—å£ï¼Œè®©éæ´»è·ƒçª—å£ç¨å¾®é€æ˜ä¸€ç‚¹ï¼Œçœ‹èµ·æ¥æ›´é«˜çº§
     ImGuiStyle& style = ImGui::GetStyle();
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
@@ -64,7 +64,7 @@ int main(void)
         style.Colors[ImGuiCol_WindowBg].w = 1.0f;
     }
 
-    // ³õÊ¼»¯ĞÂµÄºó¶Ë
+    // åˆå§‹åŒ–æ–°çš„åç«¯
     ImGui_ImplGlfw_InitForOpenGL(appWindow.GetNativeWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 330");
 

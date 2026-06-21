@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "BaseLight.h"
 
 class  PointLight:public BaseLight

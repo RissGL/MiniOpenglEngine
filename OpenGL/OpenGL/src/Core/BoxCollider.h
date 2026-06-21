@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Core/Component.h"
 #include "Core/Transform.h"
 #include "Core/GameObject.h"
@@ -9,8 +9,8 @@
 class BoxCollider:public Component
 {
 public:
-    glm::vec3 size;   // Åö×²ºĞµÄ³¤¿í¸ß
-    glm::vec3 offset; // Åö×²ºĞÏà¶ÔÓÚÄ£ĞÍÖĞĞÄµÄÆ«ÒÆ
+    glm::vec3 size;   // ç¢°æ’ç›’çš„é•¿å®½é«˜
+    glm::vec3 offset; // ç¢°æ’ç›’ç›¸å¯¹äºæ¨¡å‹ä¸­å¿ƒçš„åç§»
 
     inline static std::vector<BoxCollider*> s_AllColliders;
 
@@ -26,14 +26,14 @@ public:
 
     ~BoxCollider()
     {
-        // Ïú»ÙÊ±×Ô¶¯´ÓÈ«¾ÖÁĞ±í×¢Ïú
+        // é”€æ¯æ—¶è‡ªåŠ¨ä»å…¨å±€åˆ—è¡¨æ³¨é”€
         auto it = std::find(s_AllColliders.begin(), s_AllColliders.end(), this);
         if (it != s_AllColliders.end()) {
             s_AllColliders.erase(it);
         }
     }
 
-    // »ñÈ¡ AABB µÄ×îĞ¡µãºÍ×î´óµã (×óÏÂºó ºÍ ÓÒÉÏÇ°)
+    // è·å– AABB çš„æœ€å°ç‚¹å’Œæœ€å¤§ç‚¹ (å·¦ä¸‹å å’Œ å³ä¸Šå‰)
     glm::vec3 GetMin() const { return transform->GetWorldPosition() + offset - size * 0.5f; }
     glm::vec3 GetMax() const { return transform->GetWorldPosition() + offset + size * 0.5f; }
 

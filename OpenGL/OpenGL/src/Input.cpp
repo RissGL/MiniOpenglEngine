@@ -1,4 +1,4 @@
-#include "Input.h"
+ï»¿#include "Input.h"
 
 float Input::s_ScrollY = 0.0f;
 
@@ -15,7 +15,7 @@ void Input::EndFrame()
 bool Input::IsKeyPressed(int keycode)
 {
 	GLFWwindow* window = glfwGetCurrentContext();
-	if (!window) return false; // ·ÀÖ¹ÉÏÏÂÎÄ¶ªÊ§Ê±µÄ±ÀÀ£
+	if (!window) return false; // é˜²æ­¢ä¸Šä¸‹æ–‡ä¸¢å¤±æ—¶çš„å´©æºƒ
 
 	int state = glfwGetKey(window, keycode);
 	return state == GLFW_PRESS || state == GLFW_REPEAT;

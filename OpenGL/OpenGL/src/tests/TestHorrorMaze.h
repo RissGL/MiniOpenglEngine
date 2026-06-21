@@ -1,9 +1,10 @@
-#pragma once
+ï»¿#pragma once
 #include "Test.h"
 #include "Core/GameObject.h"
+#include "Core/Scene.h"
 #include "Model/Model.h"
 #include "Base/Shader.h"
-#include "Camera/CameraController.h" 
+#include "Camera/CameraController.h"
 #include <vector>
 #include <memory>
 #include "Base/Framebuffer.h"
@@ -27,7 +28,7 @@ namespace test
 		void BeginScene();
 		void EndScene();
 	private:
-		std::vector<std::shared_ptr<GameObject>> m_GameObjects;
+		Scene m_Scene;
 
 		std::shared_ptr<Model> m_SewerModel;
 		std::shared_ptr<Model> m_FlashlightModel;
@@ -40,7 +41,7 @@ namespace test
 		std::shared_ptr<GameObject> player;
 		std::shared_ptr<GameObject> flashlight;
 
-		//Ö¡»º³åÇø
+		// å¸§ç¼“å†²åŒº
 		std::unique_ptr<Framebuffer> m_Framebuffer;
 		glm::vec2 m_ViewportSize = { 0.0f, 0.0f };
 		SceneHierarchyPanel m_HierarchyPanel;

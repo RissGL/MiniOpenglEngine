@@ -1,4 +1,4 @@
-#include "BoxCollider.h"
+ï»¿#include "BoxCollider.h"
 #include <imgui/imgui.h>
 
 void BoxCollider::OnInspectorGUI()
@@ -10,7 +10,7 @@ void BoxCollider::OnInspectorGUI()
 
 bool BoxCollider::IsOverlapping(BoxCollider* other) const
 {
-    if (other == this) return false; // ²»ÄÜºÍ×Ô¼º×²
+    if (other == this) return false; // ä¸èƒ½å’Œè‡ªå·±æ’
 
     glm::vec3 min1 = GetMin();
     glm::vec3 max1 = GetMax();

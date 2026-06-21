@@ -1,4 +1,4 @@
-#include "SpotLight.h"
+﻿#include "SpotLight.h"
 
 SpotLight::SpotLight(glm::vec3 position, glm::vec3 attenuation, glm::vec3 diretion,
     glm::vec3 color, float cutOff,float outerCutOff, float intensity)

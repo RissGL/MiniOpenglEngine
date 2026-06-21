@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include<GL/glew.h>
 #include "VertexArray.h"
 #include "IndexBuffer.h"
@@ -18,8 +18,9 @@ bool GlLogCall(const char* function, const char* file, int line);
 
 class Renderer
 {
-public: 
+public:
     void Clear()const;
+    void ClearDepthOnly()const;
     void Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 private:
 

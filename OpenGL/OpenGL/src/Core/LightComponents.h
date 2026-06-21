@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Core/Component.h"
 #include "Core/Transform.h"
 #include "Light/PointLight.h"
@@ -57,10 +57,10 @@ public:
     void Update(float deltaTime) override
     {
         if (lightData && transform) {
-            // Î»ÖÃ¸úËæ
+            // ä½ç½®è·Ÿéš
             lightData->position = transform->localPosition;
 
-            // ³¯Ïò¸úËæ
+            // æœå‘è·Ÿéš
             glm::vec3 euler = transform->localEulerAngles;
             glm::vec3 dir;
             dir.x = cos(glm::radians(euler.y)) * cos(glm::radians(euler.x));

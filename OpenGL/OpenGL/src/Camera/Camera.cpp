@@ -1,4 +1,4 @@
-#include "Camera.h"
+ï»¿#include "Camera.h"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "MyTime.h"
@@ -116,11 +116,11 @@ glm::mat4 Camera::GetProjectionMatrix() const
 
 void Camera::ProcessMousePan(float xOffset, float yOffset)
 {
-	// Æ½ÒÆµÄËÙ¶ÈÏµÊıa
+	// å¹³ç§»çš„é€Ÿåº¦ç³»æ•°a
 	float panSpeed = 0.01f;
 
-	// xOffset ¾ö¶¨×óÓÒÆ½ÒÆ£¬ÑØ×Å m_Right ÏòÁ¿ÒÆ¶¯
+	// xOffset å†³å®šå·¦å³å¹³ç§»ï¼Œæ²¿ç€ m_Right å‘é‡ç§»åŠ¨
 	m_Pos -= m_Right * xOffset * panSpeed;
-	// yOffset ¾ö¶¨ÉÏÏÂÆ½ÒÆ£¬ÑØ×Å m_CameraUp ÏòÁ¿ÒÆ¶¯
+	// yOffset å†³å®šä¸Šä¸‹å¹³ç§»ï¼Œæ²¿ç€ m_CameraUp å‘é‡ç§»åŠ¨
 	m_Pos -= m_CameraUp * yOffset * panSpeed;
 }

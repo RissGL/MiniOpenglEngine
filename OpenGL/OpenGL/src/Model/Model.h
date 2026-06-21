@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <string>
 #include <vector>
 #include <memory>
@@ -8,10 +8,10 @@
 class Model
 {
 public:
-    // ´«ÎÄ¼þÂ·¾¶¸ø Model
+    // ä¼ æ–‡ä»¶è·¯å¾„ç»™ Model
     Model(const std::string& filepath, const std::string& targetMeshName = "");
 
-    // »­³öÕû¸öÄ£ÐÍ
+    // ç”»å‡ºæ•´ä¸ªæ¨¡åž‹
     void Draw(Shader& shader) const;
 
 private:

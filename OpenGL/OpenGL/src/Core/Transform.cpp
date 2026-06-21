@@ -1,4 +1,4 @@
-#include "Transform.h"
+ï»¿#include "Transform.h"
 #include <imgui/imgui.h>
 
 void Transform::OnInspectorGUI()
@@ -42,7 +42,7 @@ glm::mat4 Transform::GetModelMatrix() const
 
 glm::vec3 Transform::GetWorldPosition() const
 {
-	return glm::vec3(GetModelMatrix()[3]); // ´Ó¾ØÕóµÄµÚËÄÁĞÌáÈ¡Î»ÖÃ
+	return glm::vec3(GetModelMatrix()[3]); // ä»çŸ©é˜µçš„ç¬¬å››åˆ—æå–ä½ç½®
 }
 
 std::vector<Transform*> Transform::GetChildren() const

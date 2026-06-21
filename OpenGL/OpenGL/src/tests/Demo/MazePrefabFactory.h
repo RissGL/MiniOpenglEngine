@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "Core/GameObject.h"
 #include "Core/MeshRenderer.h"
 #include "Core/BoxCollider.h" 
@@ -41,7 +41,7 @@ public:
         rightWall->AddComponent<BoxCollider>(glm::vec3(1.0f, 3.0f, 6.0f));
         sceneObjects.push_back(rightWall);
 
-        return root; // ·µ»Ø¸ù½Úµã£¬¹©µØÍ¼Éú³ÉÆ÷µ÷ÓÃ
+        return root; // è¿”å›æ ¹èŠ‚ç‚¹ï¼Œä¾›åœ°å›¾ç”Ÿæˆå™¨è°ƒç”¨
     }
 
 

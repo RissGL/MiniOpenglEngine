@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 #include "BaseLight.h"
 
 class SpotLight:public BaseLight
 {
 public:
-	glm::vec3 position;//Î»ÖÃ
-	glm::vec3 direction;//·½Ïò
-	glm::vec3 attenuation;//Ë¥¼õ
-	float cutOff;//½Ç¶È,ÄÚ²¿×Ô¶¯×ª»¯³ÉÓàÏÒÖµ
-	float outerCutOff;//ÍâÇĞ½Ç
+	glm::vec3 position;//ä½ç½®
+	glm::vec3 direction;//æ–¹å‘
+	glm::vec3 attenuation;//è¡°å‡
+	float cutOff;//è§’åº¦,å†…éƒ¨è‡ªåŠ¨è½¬åŒ–æˆä½™å¼¦å€¼
+	float outerCutOff;//å¤–åˆ‡è§’
 
 	SpotLight(glm::vec3 position=glm::vec3(0.0f), glm::vec3 attenuation=glm::vec3(1.0f, 0.09f, 0.032f),
 		glm::vec3 diretion=glm::vec3(0.0f,0.0f,1.0f),glm::vec3 color=glm::vec3(1.0f), 

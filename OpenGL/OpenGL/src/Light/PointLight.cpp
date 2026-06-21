@@ -1,4 +1,4 @@
-#include "PointLight.h"
+﻿#include "PointLight.h"
 
 PointLight::PointLight(glm::vec3 position, glm::vec3 attenuation,glm::vec3 color, float intensity)
 	:BaseLight(color,intensity),position(position),attenuation(attenuation)
