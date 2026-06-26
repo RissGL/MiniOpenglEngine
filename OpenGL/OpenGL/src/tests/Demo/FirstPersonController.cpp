@@ -1,4 +1,4 @@
-ï»¿#include "FirstPersonController.h"
+#include "FirstPersonController.h"
 
 FirstPersonController::FirstPersonController(std::shared_ptr<Camera> camera)
 	:m_Camera(camera)
@@ -23,14 +23,14 @@ bool FirstPersonController::CheckCollision()
     BoxCollider* myCollider = gameObject->GetComponent<BoxCollider>();
     if (!myCollider) return false;
 
-    // éåŽ†åœºæ™¯é‡Œæ‰€æœ‰çš„å¢™å£æ€ªç‰©
+    // ±éÀú³¡¾°ÀïËùÓÐµÄÇ½±Ú¹ÖÎï
     for (BoxCollider* other : BoxCollider::s_AllColliders)
     {
         if (myCollider->IsOverlapping(other)) {
-            return true; // æ’žåˆ°äº†
+            return true; // ×²µ½ÁË
         }
     }
-    return false; // æ²¡æ’žåˆ°ï¼Œå®‰å…¨
+    return false; // Ã»×²µ½£¬°²È«
 }
 
 void FirstPersonController::Update(float deltaTime)
@@ -83,13 +83,13 @@ void FirstPersonController::Update(float deltaTime)
     if (Input::IsKeyPressed(GLFW_KEY_D)) moveVelocity += moveRight * velocity;
 
 
-    // å…ˆåªå°è¯•åœ¨ X è½´ç§»åŠ¨
+    // ÏÈÖ»³¢ÊÔÔÚ X ÖáÒÆ¶¯
     transform->localPosition.x += moveVelocity.x;
     if (CheckCollision()) {
         transform->localPosition.x -= moveVelocity.x; 
     }
 
-    // å†å°è¯•åœ¨ Z è½´ç§»åŠ¨
+    // ÔÙ³¢ÊÔÔÚ Z ÖáÒÆ¶¯
     transform->localPosition.z += moveVelocity.z;
     if (CheckCollision()) {
         transform->localPosition.z -= moveVelocity.z; 

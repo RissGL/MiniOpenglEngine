@@ -1,33 +1,33 @@
-ï»¿#pragma once
+#pragma once
 #include "UI/BaseNode.h"
 #include "Light/PointLight.h"
 
 class  PointLightNode:public BaseNode
 {
 public:
-    PointLight* m_TargetLight; // å®žé™…å…‰æºçš„æŒ‡
+    PointLight* m_TargetLight; // Êµ¼Ê¹âÔ´µÄÖ¸
 
     PointLightNode(int id, std::string name, PointLight* light)
         : BaseNode(id, name), m_TargetLight(light)
     {
-        // åˆå§‹åŒ–æ—¶ï¼ŒæŠŠ UI çš„ä½ç½®å’Œå…‰æºçš„çœŸå®žä½ç½®åŒæ­¥
+        // ³õÊ¼»¯Ê±£¬°Ñ UI µÄÎ»ÖÃºÍ¹âÔ´µÄÕæÊµÎ»ÖÃÍ¬²½
         position = m_TargetLight->position;
     }
 
-    // é‡å†™å¤šæ€å‡½æ•°
+    // ÖØÐ´¶àÌ¬º¯Êý
     void OnImGuiRenderAttributes() override
     {
         if (ImGui::DragFloat3("Position", &m_TargetLight->position.x, 0.1f)) {
-            position = m_TargetLight->position; // ä¿æŒåŒå‘åŒæ­¥
+            position = m_TargetLight->position; // ±£³ÖË«ÏòÍ¬²½
         }
 
-        // ç”»é¢œè‰²
+        // »­ÑÕÉ«
         ImGui::ColorEdit3("Color", &m_TargetLight->baseColor.x);
 
-        // ç”»å¼ºåº¦
+        // »­Ç¿¶È
         ImGui::SliderFloat("Intensity", &m_TargetLight->intensity, 0.0f, 5.0f);
 
-        // ç”»è¡°å‡å‚æ•°
+        // »­Ë¥¼õ²ÎÊý
         ImGui::DragFloat3("Attenuation (C/L/Q)", &m_TargetLight->attenuation.x, 0.01f);
     }
 

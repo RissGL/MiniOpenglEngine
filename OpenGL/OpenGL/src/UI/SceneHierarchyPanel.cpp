@@ -1,4 +1,4 @@
-ï»¿#include "SceneHierarchyPanel.h"
+#include "SceneHierarchyPanel.h"
 #include "Core/Transform.h"
 #include "Core/BoxCollider.h" 
 #include <imgui/imgui.h>
@@ -6,7 +6,7 @@
 void SceneHierarchyPanel::SetContext(std::vector<std::shared_ptr<GameObject>>* gameObjects)
 {
     m_ContextObjects = gameObjects;
-    m_SelectionContext = nullptr; // åˆ‡æ¢åœºæ™¯æ—¶æ¸…ç©ºé€‰ä¸­
+    m_SelectionContext = nullptr; // ÇĞ»»³¡¾°Ê±Çå¿ÕÑ¡ÖĞ
 }
 
 void SceneHierarchyPanel::DrawEntityNode(GameObject* entity)
@@ -46,7 +46,7 @@ void SceneHierarchyPanel::OnImGuiRender()
     }
 
     if (ImGui::IsMouseDown(0) && ImGui::IsWindowHovered())
-        m_SelectionContext = nullptr; // ç‚¹å‡»ç©ºç™½å¤„å–æ¶ˆé€‰ä¸­
+        m_SelectionContext = nullptr; // µã»÷¿Õ°×´¦È¡ÏûÑ¡ÖĞ
 
     ImGui::End();
 

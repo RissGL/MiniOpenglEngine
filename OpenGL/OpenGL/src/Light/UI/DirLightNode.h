@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #pragma once
 #include "UI/BaseNode.h"
 #include "Light/DirLight.h"
@@ -6,27 +6,27 @@
 class  DirLightNode :public BaseNode
 {
 public:
-    DirLight* m_TargetLight; // å®é™…å…‰æºçš„æŒ‡
+    DirLight* m_TargetLight; // Êµ¼Ê¹âÔ´µÄÖ¸
 
     DirLightNode(int id, std::string name, DirLight* light)
         : BaseNode(id, name), m_TargetLight(light)
     {
-        // åˆå§‹åŒ–æ—¶ï¼ŒæŠŠ UI çš„ä½ç½®å’Œå…‰æºçš„çœŸå®ä½ç½®åŒæ­¥
+        // ³õÊ¼»¯Ê±£¬°Ñ UI µÄÎ»ÖÃºÍ¹âÔ´µÄÕæÊµÎ»ÖÃÍ¬²½
         lightDirection = m_TargetLight->lightDirection;
     }
 
-    // é‡å†™å¤šæ€å‡½æ•°
+    // ÖØĞ´¶àÌ¬º¯Êı
     void OnImGuiRenderAttributes() override
     {
         if (ImGui::DragFloat3("Position", &m_TargetLight->lightDirection.x, 0.1f))
         {
-            lightDirection = m_TargetLight->lightDirection; // ä¿æŒåŒå‘åŒæ­¥
+            lightDirection = m_TargetLight->lightDirection; // ±£³ÖË«ÏòÍ¬²½
         }
 
-        // ç”»é¢œè‰²
+        // »­ÑÕÉ«
         ImGui::ColorEdit3("Color", &m_TargetLight->baseColor.x);
 
-        // ç”»å¼ºåº¦
+        // »­Ç¿¶È
         ImGui::SliderFloat("Intensity", &m_TargetLight->intensity, 0.0f, 5.0f);
     }
 

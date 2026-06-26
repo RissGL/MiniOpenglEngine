@@ -1,7 +1,7 @@
-ï»¿#pragma once
+#pragma once
 #include "Component.h"
 #include "Model/Model.h"
-#include "Transform.h" // éœ€è¦æ‹¿åˆ°çŸ©é˜µ
+#include "Transform.h" // ĞèÒªÄÃµ½¾ØÕó
 #include <memory>
 
 class MeshRenderer : public Component

@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -23,7 +23,7 @@ public:
 private:
     GLFWwindow* m_Window;
 
-    // é¼ æ ‡å›è°ƒéœ€è¦çš„é™æ€å˜é‡
+    // Êó±ê»Øµ÷ĞèÒªµÄ¾²Ì¬±äÁ¿
     static float s_LastX;
     static float s_LastY;
     static float s_OffsetX;

@@ -1,7 +1,7 @@
-ï»¿#include "MyWindow.h"
+#include "MyWindow.h"
 #include "Input.h"
 
-// é™æ€å˜é‡åˆå§‹åŒ–
+// ¾²Ì¬±äÁ¿³õÊ¼»¯
 int MyWindow::s_Width = 1920;
 int MyWindow::s_Height = 1080;
 float MyWindow::s_LastX = 1920.0f / 2.0;
@@ -14,7 +14,7 @@ MyWindow::MyWindow(int width, int height, const char* title)
 {
     if (!glfwInit())
     {
-        std::cout << "GLFW åˆå§‹åŒ–å¤±è´¥!" << std::endl;
+        std::cout << "GLFW ³õÊ¼»¯Ê§°Ü!" << std::endl;
         return;
     }
 
@@ -25,7 +25,7 @@ MyWindow::MyWindow(int width, int height, const char* title)
     m_Window = glfwCreateWindow(width, height, title, NULL, NULL);
     if (!m_Window)
     {
-        std::cout << "çª—å£åˆ›å»ºå¤±è´¥!" << std::endl;
+        std::cout << "´°¿Ú´´½¨Ê§°Ü!" << std::endl;
         glfwTerminate();
         return;
     }
@@ -38,7 +38,7 @@ MyWindow::MyWindow(int width, int height, const char* title)
 
     if (glewInit() != GLEW_OK)
     {
-        std::cout << "GLEW åˆå§‹åŒ–å¤±è´¥!" << std::endl;
+        std::cout << "GLEW ³õÊ¼»¯Ê§°Ü!" << std::endl;
     }
 
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;

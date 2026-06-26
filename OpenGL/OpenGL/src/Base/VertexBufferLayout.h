@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <vector>
 #include "GL/glew.h"
 #include "Renderer.h"
@@ -19,7 +19,6 @@ struct  VertexBufferElement
 		case GL_UNSIGNED_BYTE:  return 1;
 		}
 		ASSERT(false);
-		return 0;
 	}
 };
 class VertexBufferLayout

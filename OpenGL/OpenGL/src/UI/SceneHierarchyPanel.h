@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "Core/GameObject.h"
 #include <vector>
 #include <memory>
@@ -14,7 +14,7 @@ public:
 
 private:
 	std::vector<std::shared_ptr<GameObject>>* m_ContextObjects = nullptr;
-	GameObject* m_SelectionContext = nullptr; // å½“å‰é€‰ä¸­çš„ç‰©ä½“
+	GameObject* m_SelectionContext = nullptr; // µ±Ç°Ñ¡ÖĞµÄÎïÌå
 
 	void DrawEntityNode(GameObject* entity);
 };

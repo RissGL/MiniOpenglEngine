@@ -1,4 +1,4 @@
-ï»¿#include "Flashlight.h"
+#include "Flashlight.h"
 
 Flashlight::Flashlight(std::shared_ptr<SpotLight> light, Shader& shader,const std::string& shaderName)
 	:spotLight(light), m_Shader(shader),m_ShaderName(shaderName)
@@ -16,14 +16,14 @@ void  Flashlight::Update(float deltaTime)
     if (Input::IsKeyPressed(GLFW_KEY_F))
     {
         m_IsOn = !m_IsOn;
-        std::cout << (m_IsOn ? "æ‰‹ç”µç­’å¼€å¯" : "æ‰‹ç”µç­’å…³é—­") << std::endl;
+        std::cout << (m_IsOn ? "ÊÖµçÍ²¿ªÆô" : "ÊÖµçÍ²¹Ø±Õ") << std::endl;
     }
 
     if (m_IsOn)
     {
-        m_Battery -= 0.3f * deltaTime; // æ¯ç§’æŽ‰ 1 ç‚¹ç”µ
+        m_Battery -= 0.3f * deltaTime; // Ã¿Ãëµô 1 µãµç
         if (m_Battery <= 0.0f) {
-            m_IsOn = false; // æ²¡ç”µäº†å¼ºåˆ¶å…³æœºï¼
+            m_IsOn = false; // Ã»µçÁËÇ¿ÖÆ¹Ø»ú£¡
             m_Battery = 0.0f;
         }
     }

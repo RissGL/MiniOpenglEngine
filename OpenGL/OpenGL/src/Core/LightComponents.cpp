@@ -1,4 +1,4 @@
-﻿#include "LightComponents.h"
+#include "LightComponents.h"
 #include <imgui/imgui.h>
 
 void PointLightComponent::OnInspectorGUI()

@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include <vector>
 #include <memory>
 #include <string>
@@ -20,7 +20,7 @@ public:
 	template<typename T, typename ...Args>
 	T* AddComponent(Args && ...args)
 	{
-		static_assert(std::is_base_of<Component, T>::value, "é”™è¯¯: è„šæœ¬å¿…é¡»ç»§æ‰¿commpent");
+		static_assert(std::is_base_of<Component, T>::value, "´íÎó: ½Å±¾±ØÐë¼Ì³Ðcommpent");
 		std::shared_ptr <T> newComp = std::make_shared<T>(std::forward<Args>(args)...);
 		newComp->gameObject = this;
 		newComp->transform = this->transform;
@@ -33,7 +33,7 @@ public:
 	template<typename T>
 	T* GetComponent()
 	{
-		static_assert(std::is_base_of<Component, T>::value, "é”™è¯¯: è„šæœ¬å¿…é¡»ç»§æ‰¿commpent");
+		static_assert(std::is_base_of<Component, T>::value, "´íÎó: ½Å±¾±ØÐë¼Ì³Ðcommpent");
 
 		for (auto& comp : components) {
 			T* target = dynamic_cast<T*>(comp.get());

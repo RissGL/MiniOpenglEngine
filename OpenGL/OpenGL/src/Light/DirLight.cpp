@@ -1,4 +1,4 @@
-﻿#include "DirLight.h"
+#include "DirLight.h"
 #include "Base/Shader.h"
 
 DirLight::DirLight(glm::vec3 direction, glm::vec3 color, float intensity)

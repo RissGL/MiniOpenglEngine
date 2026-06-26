@@ -1,10 +1,9 @@
-﻿#pragma once
+#pragma once
 #include "tests/Test.h"
 #include <vector>
 #include "Base/VertexArray.h"
 #include "Base/VertexBuffer.h"
 #include "Base/IndexBuffer.h"
-#include "Base/Renderer.h"
 #include "Base/Shader.h"
 #include "Material/Texture.h"
 
@@ -43,7 +42,6 @@ namespace test
 		float m_RotationX;
 		float m_RotationY;
 
-		Renderer m_Renderer;
 		GLVideoRecorder m_Recorder;
 		bool m_ShowFFmpegTool = false;
 

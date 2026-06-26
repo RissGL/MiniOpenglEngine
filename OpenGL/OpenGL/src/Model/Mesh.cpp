@@ -1,4 +1,4 @@
-ï»¿#include "Mesh.h"
+#include "Mesh.h"
 #include "Base/VertexBufferLayout.h"
 #include <iostream>
 
@@ -7,7 +7,7 @@ Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<unsigned int>&
     m_IndexCount = indices.size();
 
     if (vertices.empty() || indices.empty()) {
-        std::cout << "è­¦å‘Š:æ²¡æœ‰é¡¶ç‚¹æˆ–ç´¢å¼•" << std::endl;
+        std::cout << "¾¯¸æ:Ã»ÓÐ¶¥µã»òË÷Òý" << std::endl;
         return;
     }
 
@@ -36,6 +36,7 @@ void Mesh::Draw(Shader& shader) const
         m_Texture->Bind(0);
     }
 
+    shader.Bind();
     m_Vao->Bind();
     m_Ibo->Bind();
     GLCALL(glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr));

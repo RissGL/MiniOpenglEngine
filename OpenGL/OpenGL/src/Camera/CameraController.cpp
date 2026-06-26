@@ -1,4 +1,4 @@
-ï»¿#include "Window/MyWindow.h"
+#include "Window/MyWindow.h"
 #include "CameraController.h"
 
 
@@ -11,7 +11,7 @@ CameraController::CameraController(Camera& camera,CameraType type)
 
 void CameraController::OnUpdate(float deltaTime)
 {
-    //  é”®ç›˜ W/A/S/D ç§»åŠ¨
+    //  ¼üÅÌ W/A/S/D ÒÆ¶¯
     if (Input::IsKeyPressed(GLFW_KEY_W)) m_Camera.MoveCamera(m_MoveSpeed * m_Camera.GetCameraFront() * deltaTime);
     if (Input::IsKeyPressed(GLFW_KEY_S)) m_Camera.MoveCamera(-m_MoveSpeed * m_Camera.GetCameraFront() * deltaTime);
     if (Input::IsKeyPressed(GLFW_KEY_A)) m_Camera.MoveCamera(-glm::normalize(glm::cross(m_Camera.GetCameraFront()
@@ -19,7 +19,7 @@ void CameraController::OnUpdate(float deltaTime)
     if (Input::IsKeyPressed(GLFW_KEY_D)) m_Camera.MoveCamera(glm::normalize(glm::cross(m_Camera.GetCameraFront()
         , m_Camera.GetCameraUp())) * m_MoveSpeed * deltaTime);
 
-    // é¼ æ ‡æ»šè½®ç¼©æ”¾
+    // Êó±ê¹öÂÖËõ·Å
     float scrollY = Input::GetScrollY();
     if (scrollY != 0.0f) {
         m_Camera.ProcessMouseScroll(scrollY);
@@ -35,20 +35,20 @@ void CameraController::OnMouseUpdate()
     if (m_FirstMouse) { m_LastX = currentX; m_LastY = currentY; m_FirstMouse = false; }
 
     float xoffset = currentX - m_LastX;
-    float yoffset = m_LastY - currentY; // å¦‚æœæ˜¯ç›¸åçš„æ‰‹æ„Ÿï¼ŒæŠŠ currentY å’Œ m_LastY è°ƒæ¢ä¸€ä¸‹
+    float yoffset = m_LastY - currentY; // Èç¹ûÊÇÏà·´µÄÊÖ¸Ğ£¬°Ñ currentY ºÍ m_LastY µ÷»»Ò»ÏÂ
     m_LastX = currentX;
     m_LastY = currentY;
 
-    // å³é”®æ—‹è½¬
+    // ÓÒ¼üĞı×ª
     if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT) && (xoffset != 0 || yoffset != 0)) {
         m_Camera.ProcessMouseMovement(xoffset, yoffset);
     }
-    // ä¸­é”®å¹³ç§»
+    // ÖĞ¼üÆ½ÒÆ
     else if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE) && (xoffset != 0 || yoffset != 0)) {
         m_Camera.ProcessMousePan(xoffset, yoffset);
     }
 
-    // å¦‚æœæ²¡æœ‰ä»»ä½•æŒ‰é”®æŒ‰ä¸‹ï¼Œé‡ç½® FirstMouse çŠ¶æ€ï¼Œé˜²æ­¢ä¸‹æ¬¡ç‚¹å‡»æ—¶ç›¸æœºè·³è·ƒ
+    // Èç¹ûÃ»ÓĞÈÎºÎ°´¼ü°´ÏÂ£¬ÖØÖÃ FirstMouse ×´Ì¬£¬·ÀÖ¹ÏÂ´Îµã»÷Ê±Ïà»úÌøÔ¾
     if (!Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT) && !Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE)) {
         m_FirstMouse = true;
     }

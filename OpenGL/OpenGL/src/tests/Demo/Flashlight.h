@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <GL/glew.h>
 #include "Input.h" 
 #include "Core/Component.h"

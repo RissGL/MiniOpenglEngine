@@ -1,4 +1,4 @@
-Ôªø#include "GLVideoRecorder.h"
+#include "GLVideoRecorder.h"
 #include "imgui/imgui.h"
 #include <GL/glew.h>
 #include <iostream>
@@ -7,7 +7,7 @@ GLVideoRecorder::GLVideoRecorder()
     : m_FFmpegPipe(nullptr), m_IsRecording(false), m_FrameCount(0), m_TargetFrames(0),
     m_EnableAudio(false), m_DurationSeconds(5), m_FPS(60)
 {
-    strcpy_s(m_FFmpegPath, "D:\\Ê°åÈù¢\\TOOL\\ffmpeg-8.0.1-full_build\\bin\\ffmpeg.exe");
+    strcpy_s(m_FFmpegPath, "D:\\◊¿√Ê\\TOOL\\ffmpeg-8.0.1-full_build\\bin\\ffmpeg.exe");
     strcpy_s(m_OutputVideo, "opengl_render.mkv"); 
     strcpy_s(m_InputAudio, "bgm.flac");
 }

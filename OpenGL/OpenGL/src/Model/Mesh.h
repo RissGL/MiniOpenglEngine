@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include <string>
 #include <vector>
 #include <memory>
@@ -11,7 +11,7 @@
 
 #include "Material/Texture.h" 
 
-// é¡¶ç‚¹ç»“æ„ä½“ä¿ç•™åœ¨è¿™é‡Œ
+// ¶¥µã½á¹¹Ìå±£ÁôÔÚÕâÀï
 struct Vertex {
     glm::vec3 Position;
     glm::vec3 Normal;

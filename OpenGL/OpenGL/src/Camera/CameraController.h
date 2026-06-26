@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "Input.h"
 #include "Camera.h"
 #include "MyTime.h"
@@ -14,10 +14,10 @@ class  CameraController
 public:
 	 CameraController(Camera& camera,CameraType type=CameraType::Editor);
 
-     // æ¯ä¸€å¸§æ›´æ–°é”®ç›˜é€»è¾‘
+     // Ã¿Ò»Ö¡¸üĞÂ¼üÅÌÂß¼­
      void OnUpdate(float deltaTime);
 
-     // å¤„ç†é¼ æ ‡æ‹–æ‹½å¹³ç§»å’Œæ—‹è½¬é€»è¾‘
+     // ´¦ÀíÊó±êÍÏ×§Æ½ÒÆºÍĞı×ªÂß¼­
      void OnMouseUpdate();
 
      void SetCmeraSpeed(float newSpeed);

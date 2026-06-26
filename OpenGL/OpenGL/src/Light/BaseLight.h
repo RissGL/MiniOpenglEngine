@@ -1,4 +1,4 @@
-ï»¿#pragma once
+#pragma once
 #include "glm/glm.hpp"
 #include <string>
 #include "Base//Shader.h"
@@ -6,8 +6,8 @@
 class BaseLight
 {
 public:
-	glm::vec3 baseColor; // å…‰æºæœ¬è‰²
-	float intensity;     // å…‰æºå¼ºåº¦
+	glm::vec3 baseColor; // ¹âÔ´±¾É«
+	float intensity;     // ¹âÔ´Ç¿¶È
 
 	BaseLight(glm::vec3 color,float intensity) 
 		:baseColor(color),intensity(intensity)

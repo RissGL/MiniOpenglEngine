@@ -133,15 +133,13 @@
   <ItemGroup>
     <ClCompile Include="src\Applacation.cpp" />
     <ClCompile Include="src\Base\Framebuffer.cpp" />
-    <ClCompile Include="src\Base\Skybox.cpp" />
     <ClCompile Include="src\Base\ufbx.c" />
     <ClCompile Include="src\Camera\Camera.cpp" />
     <ClCompile Include="src\Camera\CameraController.cpp" />
     <ClCompile Include="src\Core\BoxCollider.cpp" />
     <ClCompile Include="src\Core\GameObject.cpp" />
-    <ClCompile Include="src\Core\ResourceManager.cpp" />
-    <ClCompile Include="src\Core\Scene.cpp" />
     <ClCompile Include="src\Core\LightComponents.cpp" />
+    <ClCompile Include="src\Core\LightComponents.h" />
     <ClCompile Include="src\Core\MeshRenderer.cpp" />
     <ClCompile Include="src\Core\Transform.cpp" />
     <ClCompile Include="src\Debug\Debugcpp.cpp" />
@@ -184,8 +182,6 @@
     <None Include="src\res\shaders\LightCube.frag" />
     <None Include="src\res\shaders\LightCube.vert" />
     <None Include="src\res\shaders\LightingShader.frag" />
-    <None Include="src\res\shaders\Skybox.frag" />
-    <None Include="src\res\shaders\Skybox.vert" />
     <None Include="src\res\shaders\LightingShader.vert" />
     <None Include="src\res\shaders\shader2.frag" />
     <None Include="src\res\shaders\shader2.vert" />
@@ -332,15 +328,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Base\Framebuffer.h" />
-    <ClInclude Include="src\Base\Skybox.h" />
     <ClInclude Include="src\Base\ufbx.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\Camera\CameraController.h" />
     <ClInclude Include="src\Core\BoxCollider.h" />
     <ClInclude Include="src\Core\Component.h" />
     <ClInclude Include="src\Core\GameObject.h" />
-    <ClInclude Include="src\Core\ResourceManager.h" />
-    <ClInclude Include="src\Core\Scene.h" />
     <ClInclude Include="src\Core\MeshRenderer.h" />
     <ClInclude Include="src\Core\Transform.h" />
     <ClInclude Include="src\Debug\Debug.h" />

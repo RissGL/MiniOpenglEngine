@@ -1,4 +1,4 @@
-ï»¿#include "Model.h"
+#include "Model.h"
 #include "Base/ufbx.h"
 #include <iostream>
 
@@ -28,7 +28,7 @@ void Model::LoadModel(const std::string& filepath, const std::string& targetMesh
         return;
     }
 
-    // è·å– FBX æ–‡ä»¶æ‰€åœ¨çš„æ–‡ä»¶å¤¹è·¯å¾„ï¼Œæ–¹ä¾¿æ‹¼æ¥è´´å›¾ç›¸å¯¹è·¯å¾„
+    // »ñÈ¡ FBX ÎÄ¼şËùÔÚµÄÎÄ¼ş¼ĞÂ·¾¶£¬·½±ãÆ´½ÓÌùÍ¼Ïà¶ÔÂ·¾¶
     std::string directory = filepath.substr(0, filepath.find_last_of('/'));
 
     for (size_t i = 0; i < scene->nodes.count; i++) {
@@ -36,10 +36,10 @@ void Model::LoadModel(const std::string& filepath, const std::string& targetMesh
         if (!node->mesh) continue;
 
         std::string nodeName = node->name.data;
-        std::cout << "[FBX] å‘ç°æ¨¡å‹éƒ¨ä»¶: " << nodeName << std::endl;
+        std::cout << "[FBX] ·¢ÏÖÄ£ĞÍ²¿¼ş: " << nodeName << std::endl;
 
         if (!targetMeshName.empty() && nodeName != targetMeshName) {
-            continue; // å¦‚æœåå­—å¯¹ä¸ä¸Šï¼Œç›´æ¥è·³è¿‡ä¸åŠ è½½ï¼
+            continue; // Èç¹ûÃû×Ö¶Ô²»ÉÏ£¬Ö±½ÓÌø¹ı²»¼ÓÔØ£¡
         }
 
         ufbx_mesh* mesh = node->mesh;
@@ -53,7 +53,7 @@ void Model::LoadModel(const std::string& filepath, const std::string& targetMesh
                 if (mat->pbr.base_color.texture) {
                     finalTexturePath = mat->pbr.base_color.texture->relative_filename.data;
                 }
-                else if (mat->fbx.diffuse_color.texture) { // å…¼å®¹æ—§ç‰ˆ FBX æè´¨
+                else if (mat->fbx.diffuse_color.texture) { // ¼æÈİ¾É°æ FBX ²ÄÖÊ
                     finalTexturePath = mat->fbx.diffuse_color.texture->relative_filename.data;
                 }
 
@@ -63,9 +63,9 @@ void Model::LoadModel(const std::string& filepath, const std::string& targetMesh
                         finalTexturePath = finalTexturePath.substr(lastSlash + 1);
                     }
 
-                    // æŠŠçº¯æ–‡ä»¶åå’Œæˆ‘ä»¬è‡ªå·±çš„ FBX æ–‡ä»¶å¤¹è·¯å¾„æ‹¼èµ·æ¥
+                    // °Ñ´¿ÎÄ¼şÃûºÍÎÒÃÇ×Ô¼ºµÄ FBX ÎÄ¼ş¼ĞÂ·¾¶Æ´ÆğÀ´
                     finalTexturePath = directory + "/" + finalTexturePath;
-                    std::cout << "  -> çœŸæ­£è¦åŠ è½½çš„è´´å›¾: " << finalTexturePath << std::endl;
+                    std::cout << "  -> ÕæÕıÒª¼ÓÔØµÄÌùÍ¼: " << finalTexturePath << std::endl;
                 }
             }
         }

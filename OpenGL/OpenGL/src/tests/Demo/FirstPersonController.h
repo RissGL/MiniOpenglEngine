@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Core/Component.h"
 #include "Core/Transform.h"
 #include "Camera/Camera.h"

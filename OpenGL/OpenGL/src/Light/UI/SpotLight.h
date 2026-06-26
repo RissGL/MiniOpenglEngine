@@ -1,44 +1,44 @@
-ï»¿#pragma once
+#pragma once
 #include "UI/BaseNode.h"
 #include "Light/SpotLight.h"
 
 class  SpotLightNode :public BaseNode
 {
 public:
-    SpotLight* m_TargetLight; // å®žé™…å…‰æºçš„æŒ‡
+    SpotLight* m_TargetLight; // Êµ¼Ê¹âÔ´µÄÖ¸
     glm::vec3 direction;
 
     SpotLightNode(int id, std::string name, SpotLight* light)
         : BaseNode(id, name), m_TargetLight(light)
     {
-        // åˆå§‹åŒ–æ—¶ï¼ŒæŠŠ UI çš„ä½ç½®å’Œå…‰æºçš„çœŸå®žä½ç½®åŒæ­¥
+        // ³õÊ¼»¯Ê±£¬°Ñ UI µÄÎ»ÖÃºÍ¹âÔ´µÄÕæÊµÎ»ÖÃÍ¬²½
         position = m_TargetLight->position;
         direction = m_TargetLight->position;
     }
 
-    // é‡å†™å¤šæ€å‡½æ•°
+    // ÖØÐ´¶àÌ¬º¯Êý
     void OnImGuiRenderAttributes() override
     {
         if (ImGui::DragFloat3("Position", &m_TargetLight->position.x, 0.1f)) {
-            position = m_TargetLight->position; // ä¿æŒåŒå‘åŒæ­¥
+            position = m_TargetLight->position; // ±£³ÖË«ÏòÍ¬²½
         }
         if (ImGui::DragFloat3("Diretion", &m_TargetLight->direction.x, 0.1f)) {
-            direction = m_TargetLight->direction; // ä¿æŒåŒå‘åŒæ­¥
+            direction = m_TargetLight->direction; // ±£³ÖË«ÏòÍ¬²½
         }
 
-        // ç”»é¢œè‰²
+        // »­ÑÕÉ«
         ImGui::ColorEdit3("Color", &m_TargetLight->baseColor.x);
 
-        // ç”»å¼ºåº¦
+        // »­Ç¿¶È
         ImGui::SliderFloat("Intensity", &m_TargetLight->intensity, 0.0f, 5.0f);
 
-        // ç”»è§’åº¦
+        // »­½Ç¶È
         ImGui::SliderFloat("CutOff", &m_TargetLight->cutOff, 0.0f, 180.0f);
-        // ç”»è§’åº¦
+        // »­½Ç¶È
         ImGui::SliderFloat("OuterCutOff", &m_TargetLight->outerCutOff, 0.0f, 180.0f);
 
 
-        // ç”»è¡°å‡å‚æ•°
+        // »­Ë¥¼õ²ÎÊý
         ImGui::DragFloat3("Attenuation (C/L/Q)", &m_TargetLight->attenuation.x, 0.01f);
     }
 

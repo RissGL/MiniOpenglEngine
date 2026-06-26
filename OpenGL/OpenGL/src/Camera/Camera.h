@@ -1,10 +1,10 @@
-ï»¿#pragma once
+#pragma once
 #include "glm/glm.hpp"
 
 enum class ProjectionMode
 {
-	Perspective,  // é€è§†æŠ•å½±
-	Orthographic  // æ­£äº¤æŠ•å½±
+	Perspective,  // Í¸ÊÓÍ¶Ó°
+	Orthographic  // Õı½»Í¶Ó°
 };
 
 class  Camera
@@ -44,30 +44,30 @@ public:
 
 	void ProcessMousePan(float xOffset, float yOffset);
 
-	//å¾—åˆ°è§†å›¾çŸ©é˜µ
+	//µÃµ½ÊÓÍ¼¾ØÕó
 	glm::mat4 GetViewMatrix() const;
-	//å¾—åˆ°æŠ•å½±çŸ©é˜µ
+	//µÃµ½Í¶Ó°¾ØÕó
 	glm::mat4 GetProjectionMatrix() const;
 
 private:
-	// æ‘„åƒæœºçš„ç©ºé—´å±æ€§
+	// ÉãÏñ»úµÄ¿Õ¼äÊôĞÔ
 	glm::vec3 m_Pos;
 	glm::vec3 m_Front; 
 	glm::vec3 m_CameraUp;
 	glm::vec3 m_Right;
 	glm::vec3 m_WorldUp;
 
-	// æ¬§æ‹‰è§’ 
-	float m_Yaw;//åèˆªè§’
-	float m_Pitch;// ä¿¯ä»°è§’
-	float m_MouseSensitivity;// é¼ æ ‡çµæ•åº¦
+	// Å·À­½Ç 
+	float m_Yaw;//Æ«º½½Ç
+	float m_Pitch;// ¸©Ñö½Ç
+	float m_MouseSensitivity;// Êó±êÁéÃô¶È
 
-	// å…¶ä»–å±æ€§
-	ProjectionMode m_ProjectionMode; // æŠ•å½±æ¨¡å¼
-	float m_Fov; // è§†é‡è§’åº¦
-	float m_AspectRatio; // å®½é«˜æ¯”
-	float m_NearPlane; // è¿‘å¹³é¢è·ç¦»
-	float m_FarPlane; // è¿œå¹³é¢è·ç¦»
-	float m_OrthoScale; // æ­£äº¤æŠ•å½±ç¼©æ”¾å› å­
+	// ÆäËûÊôĞÔ
+	ProjectionMode m_ProjectionMode; // Í¶Ó°Ä£Ê½
+	float m_Fov; // ÊÓÒ°½Ç¶È
+	float m_AspectRatio; // ¿í¸ß±È
+	float m_NearPlane; // ½üÆ½Ãæ¾àÀë
+	float m_FarPlane; // Ô¶Æ½Ãæ¾àÀë
+	float m_OrthoScale; // Õı½»Í¶Ó°Ëõ·ÅÒò×Ó
 };
 

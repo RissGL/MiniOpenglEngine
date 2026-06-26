@@ -1,25 +1,21 @@
-ï»¿#include "Renderer.h"
+#include "Renderer.h"
 #include <iostream>
 #include "Debug/Debug.h"
 
 
 void Renderer::Clear()const
 {
-    GLCALL(glEnable(GL_DEPTH_TEST));
-    GLCALL(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
+    GLCALL(glClear(GL_COLOR_BUFFER_BIT));
 }
 
-void Renderer::ClearDepthOnly()const
-{
-    GLCALL(glClear(GL_DEPTH_BUFFER_BIT));
-}
-
-void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)const
+void Renderer::Draw(const VertexArray& va, const IndexBuffer& ib, const Shader& shader)const 
 {
     shader.Bind();
 
     va.Bind();
     ib.Bind();
 
+
+    // ºËÐÄ»æÖÆµ÷ÓÃ
     GLCALL(glDrawElements(GL_TRIANGLES, ib.GetCount(), GL_UNSIGNED_INT, nullptr));
 }
